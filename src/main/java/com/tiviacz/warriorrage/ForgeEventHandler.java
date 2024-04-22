@@ -89,7 +89,7 @@ public class ForgeEventHandler
     @SubscribeEvent
     public static void playerTracking(final PlayerEvent.StartTracking event)
     {
-        if(event.getTarget() instanceof Player && !event.getTarget().level().isClientSide)
+        if(event.getTarget() instanceof Player && !event.getTarget().level.isClientSide)
         {
             ServerPlayer target = (ServerPlayer)event.getTarget();
 
@@ -167,10 +167,10 @@ public class ForgeEventHandler
         {
             for(int i = 0; i < 5; ++i)
             {
-                double d0 = player.level().random.nextGaussian() * 0.02D;
-                double d1 = player.level().random.nextGaussian() * 0.02D;
-                double d2 = player.level().random.nextGaussian() * 0.02D;
-                player.level().addParticle(particleOptions, player.getRandomX(1.0D), player.getRandomY() + 1.0D, player.getRandomZ(1.0D), d0, d1, d2);
+                double d0 = player.level.random.nextGaussian() * 0.02D;
+                double d1 = player.level.random.nextGaussian() * 0.02D;
+                double d2 = player.level.random.nextGaussian() * 0.02D;
+                player.level.addParticle(particleOptions, player.getRandomX(1.0D), player.getRandomY() + 1.0D, player.getRandomZ(1.0D), d0, d1, d2);
             }
             tick = 0;
         }

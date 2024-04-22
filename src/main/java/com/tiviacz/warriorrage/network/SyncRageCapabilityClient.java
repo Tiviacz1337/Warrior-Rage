@@ -43,7 +43,7 @@ public class SyncRageCapabilityClient
     public static void handle(final SyncRageCapabilityClient message, final Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 
-            final Player playerEntity = (Player)Minecraft.getInstance().player.level().getEntity(message.entityID);
+            final Player playerEntity = (Player)Minecraft.getInstance().player.level.getEntity(message.entityID);
             IRage cap = CapabilityUtils.getCapability(playerEntity).orElse(null);
             if (cap != null) {
                 cap.setKillCount(message.killCount);

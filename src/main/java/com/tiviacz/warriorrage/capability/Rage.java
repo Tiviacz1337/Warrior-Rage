@@ -139,7 +139,7 @@ public class Rage implements IRage
     @Override
     public void synchronise()
     {
-        if(playerEntity != null && !playerEntity.level().isClientSide)
+        if(playerEntity != null && !playerEntity.level.isClientSide)
         {
             ServerPlayer serverPlayer = (ServerPlayer)playerEntity;
             CapabilityUtils.getCapability(serverPlayer).ifPresent(cap -> WarriorRage.NETWORK.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SyncRageCapabilityClient(this.killCount, this.rageDuration, serverPlayer.getId())));
@@ -149,7 +149,7 @@ public class Rage implements IRage
     @Override
     public void synchroniseToOthers(Player player)
     {
-        if(player != null && !player.level().isClientSide)
+        if(player != null && !player.level.isClientSide)
         {
             ServerPlayer serverPlayer = (ServerPlayer)player;
             //CapabilityUtils.getCapability(serverPlayer).ifPresent(cap -> WarriorRage.NETWORK.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> serverPlayer), new SyncBackpackCapabilityClient(this.wearable.save(new CompoundTag()), serverPlayer.getId())));

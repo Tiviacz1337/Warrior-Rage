@@ -1,8 +1,6 @@
 {
     "pack": {
-        "description": {
-            "text": "Warrior Rage Resources"
-        },
-        "pack_format": 15
+        "description": "Warrior Rage Resources",
+        "pack_format": 9
     }
 }
