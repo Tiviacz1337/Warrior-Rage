@@ -21,8 +21,8 @@ public class WarriorRageConfig
 
         Server(final ForgeConfigSpec.Builder builder)
         {
-            builder.comment("Common config settings")
-                    .push("common");
+            builder.comment("Server config settings")
+                    .push("server");
 
             minimalKillCount = builder
                     .comment("Minimal kill count for rage to enable")
