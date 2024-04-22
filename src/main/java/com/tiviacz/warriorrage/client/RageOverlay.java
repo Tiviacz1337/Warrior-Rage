@@ -13,17 +13,24 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.OverlayRegistry;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = WarriorRage.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RageOverlay
 {
-    public static void renderRageBar(ForgeGui gui, PoseStack mStack, float partialTicks, int screenWidth, int screenHeight)
+    public static void init()
+    {
+        OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, "Warrior Rage Bar Overlay", (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
+            Minecraft mc = Minecraft.getInstance();
+            if (!mc.player.isRidingJumpable() && !mc.options.hideGui)
+            {
+                renderRageBar(gui, mStack, partialTicks, screenWidth, screenHeight);
+            }
+        });
+    }
+
+    public static void renderRageBar(ForgeIngameGui gui, PoseStack mStack, float partialTicks, int screenWidth, int screenHeight)
     {
         if(!WarriorRageConfig.CLIENT.renderRageOverlay.get()) return;
 
@@ -46,11 +53,9 @@ public class RageOverlay
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 RenderSystem.setShaderTexture(0, texture);
 
-                //Bar
                 gui.blit(mStack, screenWidth / 2 - 91, screenHeight - 32 + 3, 0, 69, k, 5);
-
-                //Skull
                 gui.blit(mStack, screenWidth / 2 + 94 + WarriorRageConfig.CLIENT.offsetX.get(), screenHeight - 32 + 16 + WarriorRageConfig.CLIENT.offsetY.get(), 0, 0, 14, 14);
+                //mStack.scale(1.0F / 6, 1.0F / 6, 1.0F / 6);
 
                 String s = "" + rage.getCurrentKillCount();
                 int i1 = (screenWidth - gui.getFont().width(s)) / 2 + 115 + WarriorRageConfig.CLIENT.offsetX.get();
@@ -67,18 +72,5 @@ public class RageOverlay
             //gui.blit(mStack, (screenWidth / 2 - 91), screenHeight - 32 + 3, -(91 - k), 74, 91, 5);
             //gui.blit(mStack, screenWidth / 2 + 91, screenHeight - 32 + 3, 0, 69, k + 91, 5);
         }
-    }
-
-    @SubscribeEvent
-    public static void registerOverlay(final RegisterGuiOverlaysEvent evt)
-    {
-        evt.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "warrior_rage", (gui, poseStack, partialTick, width, height) -> {
-            Minecraft mc = Minecraft.getInstance();
-
-            if (!mc.player.isRidingJumpable() && !mc.options.hideGui)
-            {
-                renderRageBar(gui, poseStack, partialTick, width, height);
-            }
-        });
     }
 }

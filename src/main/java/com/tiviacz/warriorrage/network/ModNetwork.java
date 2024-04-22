@@ -20,7 +20,7 @@ public class ModNetwork
         channel.messageBuilder(SyncRageCapabilityClient.class, 0)
                 .decoder(SyncRageCapabilityClient::decode)
                 .encoder(SyncRageCapabilityClient::encode)
-                .consumerMainThread(SyncRageCapabilityClient::handle)
+                .consumer(SyncRageCapabilityClient::handle)
                 .add();
 
         return channel;

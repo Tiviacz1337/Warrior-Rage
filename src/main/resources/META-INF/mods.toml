@@ -1,7 +1,7 @@
 
 modLoader="javafml"
 
-loaderVersion="[42,)"
+loaderVersion="[40,)"
 
 license="All Rights Reserved"
 
@@ -13,7 +13,7 @@ logoFile="assets/warriorrage/logo.png"
 
 modId="warriorrage"
 
-version="1.2.3"
+version="1.0.5"
 
 displayName="Warrior Rage"
 
@@ -30,13 +30,13 @@ Brings Kill Streak functionality to combat.
 [[dependencies.warriorrage]]
     modId="forge"
     mandatory=true
-    versionRange="[42,)"
+    versionRange="[40,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.warriorrage]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.1, 1.20)"
+    versionRange="[1.18.1,1.19)"
     ordering="NONE"
     side="BOTH"

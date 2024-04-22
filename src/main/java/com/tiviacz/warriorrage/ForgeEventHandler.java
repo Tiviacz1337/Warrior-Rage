@@ -14,7 +14,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -61,24 +61,24 @@ public class ForgeEventHandler
         oldPlayer.revive();
 
         CapabilityUtils.getCapability(oldPlayer)
-                .ifPresent(oldRage -> CapabilityUtils.getCapability(event.getEntity())
+                .ifPresent(oldRage -> CapabilityUtils.getCapability(event.getPlayer())
                         .ifPresent(newRage -> newRage.setKillCount(oldRage.getCurrentKillCount())));
     }
 
     @SubscribeEvent
     public static void playerChangeDimension(final PlayerEvent.PlayerChangedDimensionEvent event)
     {
-        CapabilityUtils.synchronise(event.getEntity());
+        CapabilityUtils.synchronise(event.getPlayer());
     }
 
     @SubscribeEvent
     public static void playerJoin(final PlayerEvent.PlayerLoggedInEvent event)
     {
-        CapabilityUtils.synchronise(event.getEntity());
+        CapabilityUtils.synchronise(event.getPlayer());
     }
 
     @SubscribeEvent
-    public static void entityJoin(EntityJoinLevelEvent event)
+    public static void entityJoin(EntityJoinWorldEvent event)
     {
         if(event.getEntity() instanceof Player player)
         {
