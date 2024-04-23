@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.tiviacz.warriorrage.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "com.tiviacz.warriorrage.WarriorRageMixinPlugin",
+  "mixins": [
+    "LivingEntityMixin",
+    "PlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "InGameHudMixin"
+  ]
+}

@@ -1,28 +1,27 @@
 package com.tiviacz.warriorrage.network;
 
 import com.tiviacz.warriorrage.WarriorRage;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import com.tiviacz.warriorrage.config.WarriorRageConfig;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 
 public class ModNetwork
 {
-    public static final ResourceLocation CHANNEL_NAME = new ResourceLocation(WarriorRage.MODID, "network");
-    public static final String NETWORK_VERSION = new ResourceLocation(WarriorRage.MODID, "1").toString();
+    public static final Identifier UPDATE_CONFIG_ID = new Identifier(WarriorRage.MODID,"update_config");
 
-    public static SimpleChannel getNetworkChannel() {
-        final SimpleChannel channel = NetworkRegistry.ChannelBuilder.named(CHANNEL_NAME)
-                .clientAcceptedVersions(version -> true)
-                .serverAcceptedVersions(version -> true)
-                .networkProtocolVersion(() -> NETWORK_VERSION)
-                .simpleChannel();
-
-        channel.messageBuilder(SyncRageCapabilityClient.class, 0)
-                .decoder(SyncRageCapabilityClient::decode)
-                .encoder(SyncRageCapabilityClient::encode)
-                .consumerMainThread(SyncRageCapabilityClient::handle)
-                .add();
-
-        return channel;
+    public static void initClient()
+    {
+        ClientPlayNetworking.registerGlobalReceiver(UPDATE_CONFIG_ID, (client, handler, buf, sender) ->
+        {
+            NbtCompound configNbt = buf.readNbt();
+            client.execute(() ->
+            {
+                if(configNbt != null)
+                {
+                    WarriorRageConfig.fromNbt(configNbt);
+                }
+            });
+        });
     }
 }
