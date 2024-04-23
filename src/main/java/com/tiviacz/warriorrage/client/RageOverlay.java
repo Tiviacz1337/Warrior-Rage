@@ -51,12 +51,12 @@ public class RageOverlay extends Screen
                 RenderSystem.setShaderTexture(0, texture);
 
                 drawTexture(matrices, screenWidth / 2 - 91, screenHeight - 32 + 3, 0, 69, k, 5);
-                drawTexture(matrices, screenWidth / 2 + 94 + WarriorRageConfig.offsetX, screenHeight - 32 + 16 + WarriorRageConfig.offsetY, 0, 0, 14, 14);
+                drawTexture(matrices, screenWidth / 2 + 94 + WarriorRageConfig.getConfig().offsetX, screenHeight - 32 + 16 + WarriorRageConfig.getConfig().offsetY, 0, 0, 14, 14);
                 //mStack.scale(1.0F / 6, 1.0F / 6, 1.0F / 6);
 
                 String s = "" + rage.getCurrentKillCount();
-                int i1 = (screenWidth - mc.textRenderer.getWidth(s)) / 2 + 115 + WarriorRageConfig.offsetX;
-                int j1 = screenHeight - 31 + 18 + WarriorRageConfig.offsetY;
+                int i1 = (screenWidth - mc.textRenderer.getWidth(s)) / 2 + 115 + WarriorRageConfig.getConfig().offsetX;
+                int j1 = screenHeight - 31 + 18 + WarriorRageConfig.getConfig().offsetY;
                 mc.textRenderer.draw(matrices, s, (float)(i1 + 1), (float)j1, 0);
                 mc.textRenderer.draw(matrices, s, (float)(i1 - 1), (float)j1, 0);
                 mc.textRenderer.draw(matrices, s, (float)i1, (float)(j1 + 1), 0);

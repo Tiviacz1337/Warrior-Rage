@@ -1,0 +1,14 @@
+{
+  "text.autoconfig.warriorrage.category.server": "Server",
+  "text.autoconfig.warriorrage.category.client": "Client",
+  "text.autoconfig.warriorrage.option.minimalKillCount": "Minimal kill count",
+  "text.autoconfig.warriorrage.option.rageDuration": "Rage duration",
+  "text.autoconfig.warriorrage.option.maxKillCountCap": "Max kill count cap",
+  "text.autoconfig.warriorrage.option.killIntervalBetweenNextBonus": "Kill interval between next bonus",
+  "text.autoconfig.warriorrage.option.bonusDamage": "Bonus damage",
+  "text.autoconfig.warriorrage.option.enableFireDamage": "Enable fire damage",
+  "text.autoconfig.warriorrage.option.fireDamageRequiredKillCount": "Fire damage required kill count",
+  "text.autoconfig.warriorrage.option.renderRageOverlay": "Render rage overlay",
+  "text.autoconfig.warriorrage.option.offsetX": "Offset X",
+  "text.autoconfig.warriorrage.option.offsetY": "Offset Y"
+}

@@ -18,9 +18,9 @@ import java.util.UUID;
 public class Rage implements IRage
 {
     private static final UUID RAGE = UUID.fromString("6e982d48-e5e6-11ec-8fea-0242ac120002");
-    public static final int DEFAULT_RAGE_DURATION = 20 * WarriorRageConfig.rageDuration; //20ticks*10 = 10 seconds
-    public static final int MAX_KILL_COUNT_CAP = WarriorRageConfig.maxKillCountCap;
-    public static final double BASE_MULTIPLIER = WarriorRageConfig.bonusDamageMultiplier;
+    public static final int DEFAULT_RAGE_DURATION = 20 * WarriorRageConfig.getConfig().rageDuration; //20ticks*10 = 10 seconds
+    public static final int MAX_KILL_COUNT_CAP = WarriorRageConfig.getConfig().maxKillCountCap;
+    public static final double BASE_MULTIPLIER = WarriorRageConfig.getConfig().bonusDamage;
     private int rageDuration = 0;
     private int killCount = 0;
     private final PlayerEntity playerEntity;
@@ -54,11 +54,11 @@ public class Rage implements IRage
     @Override
     public boolean canStartRage()
     {
-        return this.killCount >= WarriorRageConfig.minimalKillCount && getRemainingRageDuration() > 0;
+        return this.killCount >= WarriorRageConfig.getConfig().minimalKillCount && getRemainingRageDuration() > 0;
     }
     public double calculateBonusDamage(int killCount, double multiplier)
     {
-        return WarriorRageConfig.killIntervalBetweenNextBonus == 0 ? killCount * multiplier : (killCount / WarriorRageConfig.killIntervalBetweenNextBonus) * multiplier;
+        return WarriorRageConfig.getConfig().killIntervalBetweenNextBonus == 0 ? killCount * multiplier : (killCount / WarriorRageConfig.getConfig().killIntervalBetweenNextBonus) * multiplier;
     }
 
     @Override

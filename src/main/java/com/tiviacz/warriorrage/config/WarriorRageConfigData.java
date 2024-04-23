@@ -9,39 +9,50 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 @Config(name = WarriorRage.MODID)
 public class WarriorRageConfigData implements ConfigData
 {
-    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Category("server")
+    @ConfigEntry.Gui.RequiresRestart
     @Comment("Minimal kill count for rage to enable")
     public int minimalKillCount = 3;
 
-    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Category("server")
+    @ConfigEntry.Gui.RequiresRestart
     @Comment("In Seconds")
     public int rageDuration = 20;
 
-    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Category("server")
+    @ConfigEntry.Gui.RequiresRestart
     @Comment("Max kill count for rage bonus damage")
     public int maxKillCountCap = 20;
 
-    @ConfigEntry.Gui.Tooltip
-    @Comment("Number of kills, which will multiply the bonus damage eg. 5 means, every 5 kills attack damage will be increased by bonusDamageMultiplier value")
+    @ConfigEntry.Category("server")
+    @ConfigEntry.Gui.RequiresRestart
+    @Comment("Number of kills, which will multiply the bonus damage eg. 5 means, every 5 kills attack damage will be increased by bonusDamage value")
     public int killIntervalBetweenNextBonus = 4;
 
-    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Category("server")
+    @ConfigEntry.Gui.RequiresRestart
     @Comment("Bonus damage per 4 kills in a row")
-    public double bonusDamageMultiplier = 0.5D;
+    public double bonusDamage = 0.5D;
 
-    @ConfigEntry.Gui.Tooltip
-    @Comment("Enable Fire Damage on full kill count")
+    @ConfigEntry.Category("server")
+    @ConfigEntry.Gui.RequiresRestart
+    @Comment("Enable Fire Damage")
     public boolean enableFireDamage = true;
 
-    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Category("server")
+    @ConfigEntry.Gui.RequiresRestart
+    @Comment("Required minimal kill count for fire damage to apply")
+    public int fireDamageRequiredKillCount = 20;
+
+    @ConfigEntry.Category("client")
     @Comment("Render Rage Overlay on experience bar")
     public boolean renderRageOverlay = true;
 
-    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Category("client")
     @Comment("Negative offsets to left side, positive to right")
     public int offsetX = 0;
 
-    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Category("client")
     @Comment("Negative offsets to up, positive to down")
     public int offsetY = 0;
 }

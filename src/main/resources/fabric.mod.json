@@ -9,7 +9,8 @@
   },
 
   "name": "Warrior Rage",
-  "description": "Warrior Rage for Fabric!",
+  "description": "Brings Kill Streak functionality to combat",
+  "icon": "assets/warriorrage/icon.png",
   "authors": [
     "Tiviacz1337"
   ],
@@ -33,6 +34,10 @@
 
     "cardinal-components-entity": [
       "com.tiviacz.warriorrage.component.ComponentUtils"
+    ],
+
+    "modmenu": [
+      "com.tiviacz.warriorrage.compat.ModMenuIntegration"
     ]
   },
 

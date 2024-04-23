@@ -2,7 +2,7 @@ package com.tiviacz.warriorrage.handler;
 
 import com.tiviacz.warriorrage.component.ComponentUtils;
 import com.tiviacz.warriorrage.component.IRage;
-import com.tiviacz.warriorrage.component.Rage;
+import com.tiviacz.warriorrage.config.WarriorRageConfig;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.util.ActionResult;
 
@@ -16,7 +16,7 @@ public class AttackEntityHandler
             {
                 IRage rage = ComponentUtils.getComponent(player);
 
-                if(rage.getCurrentKillCount() >= Rage.MAX_KILL_COUNT_CAP)
+                if(WarriorRageConfig.getConfig().enableFireDamage && rage.getCurrentKillCount() >= WarriorRageConfig.getConfig().fireDamageRequiredKillCount)
                 {
                     if(entity != null)
                     {

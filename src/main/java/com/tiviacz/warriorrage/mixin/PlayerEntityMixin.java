@@ -39,8 +39,6 @@ public abstract class PlayerEntityMixin extends LivingEntity
         }
     }
 
-    private static int tick = 0;
-
     @Inject(at = @At(value = "TAIL"), method = "tick")
     private void rageTick(CallbackInfo info)
     {
@@ -58,7 +56,7 @@ public abstract class PlayerEntityMixin extends LivingEntity
                         rage.startRage();
                         rage.decreaseRageDuration();
                     }
-                    else if(rage.getRemainingRageDuration() > 0 && rage.getCurrentKillCount() < WarriorRageConfig.minimalKillCount)
+                    else if(rage.getRemainingRageDuration() > 0 && rage.getCurrentKillCount() < WarriorRageConfig.getConfig().minimalKillCount)
                     {
                         rage.decreaseRageDuration();
                     }
@@ -71,17 +69,19 @@ public abstract class PlayerEntityMixin extends LivingEntity
         }
     }
 
-    private static void addParticlesAroundSelf(ParticleEffect particleEffect, PlayerEntity player)
+    private int tick = 0;
+
+    private void addParticlesAroundSelf(ParticleEffect particleEffect, PlayerEntity player)
     {
         tick++;
 
         if(tick == 50)
         {
             for(int i = 0; i < 5; ++i) {
-                double d0 = player.world.random.nextGaussian() * 0.02D;
-                double d1 = player.world.random.nextGaussian() * 0.02D;
-                double d2 = player.world.random.nextGaussian() * 0.02D;
-                player.world.addParticle(particleEffect, player.getParticleX(1.0D), player.getRandomBodyY() + 1.0D, player.getParticleZ(1.0D), d0, d1, d2);
+                double d0 = player.getWorld().random.nextGaussian() * 0.02D;
+                double d1 = player.getWorld().random.nextGaussian() * 0.02D;
+                double d2 = player.getWorld().random.nextGaussian() * 0.02D;
+                player.getWorld().addParticle(particleEffect, player.getParticleX(1.0D), player.getRandomBodyY() + 1.0D, player.getParticleZ(1.0D), d0, d1, d2);
             }
             tick = 0;
         }
