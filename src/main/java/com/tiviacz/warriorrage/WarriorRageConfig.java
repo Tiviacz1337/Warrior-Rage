@@ -26,37 +26,30 @@ public class WarriorRageConfig
 
             minimalKillCount = builder
                     .comment("Minimal kill count for rage to enable")
-                    .translation("warriorrage.config.server.minimalKillCount")
                     .defineInRange("minimalKillCount", 3, 0, 1000);
 
             rageDuration = builder
                     .comment("In Seconds")
-                    .translation("warriorrage.config.server.rageDuration")
                     .defineInRange("rageDuration", 20, 0, 1000);
 
             maxKillCountCap = builder
                     .comment("Max kill count for rage bonus damage")
-                    .translation("warriorrage.config.server.maxKillCountCap")
                     .defineInRange("maxKillCountCap", 20, 0, 1000);
 
             killIntervalBetweenNextBonus = builder
                     .comment("Number of kills, which will multiply the bonus damage eg. 5 means, every 5 kills attack damage will be increased by bonusDamage value")
-                    .translation("warriorrage.config.server.killIntervalBetweenNextBonus")
                     .defineInRange("killIntervalBetweenNextBonus", 4, 1, 1000);
 
             bonusDamage = builder
                     .comment("Bonus damage per 4 kills in a row")
-                    .translation("warriorrage.config.server.bonusDamage")
                     .defineInRange("bonusDamage", 0.5D, 0.01D, 10.0D);
 
             enableFireDamage = builder
                     .comment("Enable Fire Damage")
-                    .translation("warriorrage.config.server.enableFireDamage")
                     .define("enableFireDamage", true);
 
             fireDamageRequiredKillCount = builder
                     .comment("Required minimal kill count for fire damage to apply")
-                    .translation("warriorrage.config.server.fireDamageRequiredKillCount")
                     .defineInRange("fireDamageRequiredKillCount", 20, 0, 1000);
 
             builder.pop();
@@ -65,7 +58,8 @@ public class WarriorRageConfig
 
     public static class Client
     {
-        public final ForgeConfigSpec.BooleanValue renderRageOverlay;
+        public final ForgeConfigSpec.BooleanValue renderRageBar;
+        public final ForgeConfigSpec.BooleanValue renderRageIcon;
         public final ForgeConfigSpec.IntValue offsetX;
         public final ForgeConfigSpec.IntValue offsetY;
 
@@ -74,10 +68,13 @@ public class WarriorRageConfig
             builder.comment("Client-only settings")
                     .push("client");
 
-            renderRageOverlay = builder
-                    .comment("Render Rage Overlay on experience bar")
-                    .translation("warriorrage.config.client.renderRageOverlay")
-                    .define("renderRageOverlay", true);
+            renderRageBar = builder
+                    .comment("Render Rage Bar on experience bar")
+                    .define("renderRageBar", true);
+
+            renderRageIcon = builder
+                    .comment("Render Rage Icon next to player's Hotbar")
+                    .define("renderRageIcon", true);
 
             offsetX = builder
                     .comment("Negative offsets to left side, positive to right")
