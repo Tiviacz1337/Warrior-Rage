@@ -50,24 +50,25 @@ public class RageOverlay extends Screen
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 RenderSystem.setShaderTexture(0, texture);
 
-                drawTexture(matrices, screenWidth / 2 - 91, screenHeight - 32 + 3, 0, 69, k, 5);
-                drawTexture(matrices, screenWidth / 2 + 94 + WarriorRageConfig.getConfig().offsetX, screenHeight - 32 + 16 + WarriorRageConfig.getConfig().offsetY, 0, 0, 14, 14);
-                //mStack.scale(1.0F / 6, 1.0F / 6, 1.0F / 6);
+                if(WarriorRageConfig.getConfig().renderRageBar)
+                {
+                    drawTexture(matrices, screenWidth / 2 - 91, screenHeight - 32 + 3, 0, 69, k, 5);
+                }
 
-                String s = "" + rage.getCurrentKillCount();
-                int i1 = (screenWidth - mc.textRenderer.getWidth(s)) / 2 + 115 + WarriorRageConfig.getConfig().offsetX;
-                int j1 = screenHeight - 31 + 18 + WarriorRageConfig.getConfig().offsetY;
-                mc.textRenderer.draw(matrices, s, (float)(i1 + 1), (float)j1, 0);
-                mc.textRenderer.draw(matrices, s, (float)(i1 - 1), (float)j1, 0);
-                mc.textRenderer.draw(matrices, s, (float)i1, (float)(j1 + 1), 0);
-                mc.textRenderer.draw(matrices, s, (float)i1, (float)(j1 - 1), 0);
-                mc.textRenderer.draw(matrices, s, (float)i1, (float)j1, 6362132);
+                if(WarriorRageConfig.getConfig().renderRageIcon)
+                {
+                    drawTexture(matrices, screenWidth / 2 + 94 + WarriorRageConfig.getConfig().offsetX, screenHeight - 32 + 16 + WarriorRageConfig.getConfig().offsetY, 0, 0, 14, 14);
+
+                    String s = "" + rage.getCurrentKillCount();
+                    int i1 = (screenWidth - mc.textRenderer.getWidth(s)) / 2 + 115 + WarriorRageConfig.getConfig().offsetX;
+                    int j1 = screenHeight - 31 + 18 + WarriorRageConfig.getConfig().offsetY;
+                    mc.textRenderer.draw(matrices, s, (float)(i1 + 1), (float)j1, 0);
+                    mc.textRenderer.draw(matrices, s, (float)(i1 - 1), (float)j1, 0);
+                    mc.textRenderer.draw(matrices, s, (float)i1, (float)(j1 + 1), 0);
+                    mc.textRenderer.draw(matrices, s, (float)i1, (float)(j1 - 1), 0);
+                    mc.textRenderer.draw(matrices, s, (float)i1, (float)j1, 6362132);
+                }
             }
-            // float durationProgress = (float)CapabilityUtils.getCapability(player).resolve().get().getRemainingRageDuration() / Rage.DEFAULT_RAGE_DURATION;
-            // int k = (int)(durationProgress * (183.0F / 2));
-            // gui.blit(mStack, (screenWidth / 2 - 91) + 91, screenHeight - 32 + 3, 0, 69, k, 5);
-            //gui.blit(mStack, (screenWidth / 2 - 91), screenHeight - 32 + 3, -(91 - k), 74, 91, 5);
-            //gui.blit(mStack, screenWidth / 2 + 91, screenHeight - 32 + 3, 0, 69, k + 91, 5);
         }
     }
 }

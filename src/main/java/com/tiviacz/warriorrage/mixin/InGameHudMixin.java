@@ -17,7 +17,7 @@ public class InGameHudMixin
     @Inject(at = @At(value = "TAIL"), method = "renderExperienceBar")
     private void renderOverlay(MatrixStack matrices, int x, CallbackInfo ci)
     {
-        if(WarriorRageConfig.getConfig().renderRageOverlay && !MinecraftClient.getInstance().player.isRiding() && !MinecraftClient.getInstance().options.hudHidden)
+        if((WarriorRageConfig.getConfig().renderRageBar || WarriorRageConfig.getConfig().renderRageIcon) && !MinecraftClient.getInstance().player.isRiding() && !MinecraftClient.getInstance().options.hudHidden)
         {
             if(ComponentUtils.RAGE.isProvidedBy(MinecraftClient.getInstance().player))
             {
