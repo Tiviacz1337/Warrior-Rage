@@ -23,7 +23,7 @@ public class RageOverlay
 {
     public static void renderRageBar(ForgeGui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight)
     {
-        if(!WarriorRageConfig.CLIENT.renderRageOverlay.get()) return;
+        if(!WarriorRageConfig.CLIENT.renderRageIcon.get() && !WarriorRageConfig.CLIENT.renderRageBar.get()) return;
 
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
@@ -44,26 +44,24 @@ public class RageOverlay
                 //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 //RenderSystem.setShaderTexture(0, texture);
 
-                //Bar
-                guiGraphics.blit(texture, screenWidth / 2 - 91, screenHeight - 32 + 3, 0, 69, k, 5);
+                if(WarriorRageConfig.CLIENT.renderRageBar.get())
+                {
+                    guiGraphics.blit(texture, screenWidth / 2 - 91, screenHeight - 32 + 3, 0, 69, k, 5);
+                }
 
-                //Skull
-                guiGraphics.blit(texture, screenWidth / 2 + 94 + WarriorRageConfig.CLIENT.offsetX.get(), screenHeight - 32 + 16 + WarriorRageConfig.CLIENT.offsetY.get(), 0, 0, 14, 14);
-
-                String s = "" + rage.getCurrentKillCount();
-                int i1 = (screenWidth - gui.getFont().width(s)) / 2 + 115 + WarriorRageConfig.CLIENT.offsetX.get();
-                int j1 = screenHeight - 31 + 18 + WarriorRageConfig.CLIENT.offsetY.get();
-                guiGraphics.drawString(gui.getFont(), s, (float)(i1 + 1), (float)j1, 0, false);
-                guiGraphics.drawString(gui.getFont(), s, (float)(i1 - 1), (float)j1, 0, false);
-                guiGraphics.drawString(gui.getFont(), s, (float)i1, (float)(j1 + 1), 0, false);
-                guiGraphics.drawString(gui.getFont(), s, (float)i1, (float)(j1 - 1), 0, false);
-                guiGraphics.drawString(gui.getFont(), s, (float)i1, (float)j1, 6362132, false);
+                if(WarriorRageConfig.CLIENT.renderRageIcon.get())
+                {
+                    guiGraphics.blit(texture, screenWidth / 2 + 94 + WarriorRageConfig.CLIENT.offsetX.get(), screenHeight - 32 + 16 + WarriorRageConfig.CLIENT.offsetY.get(), 0, 0, 14, 14);
+                    String s = "" + rage.getCurrentKillCount();
+                    int i1 = (screenWidth - gui.getFont().width(s)) / 2 + 115 + WarriorRageConfig.CLIENT.offsetX.get();
+                    int j1 = screenHeight - 31 + 18 + WarriorRageConfig.CLIENT.offsetY.get();
+                    guiGraphics.drawString(gui.getFont(), s, (float)(i1 + 1), (float)j1, 0, false);
+                    guiGraphics.drawString(gui.getFont(), s, (float)(i1 - 1), (float)j1, 0, false);
+                    guiGraphics.drawString(gui.getFont(), s, (float)i1, (float)(j1 + 1), 0, false);
+                    guiGraphics.drawString(gui.getFont(), s, (float)i1, (float)(j1 - 1), 0, false);
+                    guiGraphics.drawString(gui.getFont(), s, (float)i1, (float)j1, 6362132, false);
+                }
             }
-           // float durationProgress = (float)CapabilityUtils.getCapability(player).resolve().get().getRemainingRageDuration() / Rage.DEFAULT_RAGE_DURATION;
-           // int k = (int)(durationProgress * (183.0F / 2));
-           // gui.blit(mStack, (screenWidth / 2 - 91) + 91, screenHeight - 32 + 3, 0, 69, k, 5);
-            //gui.blit(mStack, (screenWidth / 2 - 91), screenHeight - 32 + 3, -(91 - k), 74, 91, 5);
-            //gui.blit(mStack, screenWidth / 2 + 91, screenHeight - 32 + 3, 0, 69, k + 91, 5);
         }
     }
 
