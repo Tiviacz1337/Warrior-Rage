@@ -8,7 +8,8 @@
   "text.autoconfig.warriorrage.option.bonusDamage": "Bonus damage",
   "text.autoconfig.warriorrage.option.enableFireDamage": "Enable fire damage",
   "text.autoconfig.warriorrage.option.fireDamageRequiredKillCount": "Fire damage required kill count",
-  "text.autoconfig.warriorrage.option.renderRageOverlay": "Render rage overlay",
+  "text.autoconfig.warriorrage.option.renderRageBar": "Render rage bar",
+  "text.autoconfig.warriorrage.option.renderRageIcon": "Render rage icon",
   "text.autoconfig.warriorrage.option.offsetX": "Offset X",
   "text.autoconfig.warriorrage.option.offsetY": "Offset Y"
 }

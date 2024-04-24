@@ -41,7 +41,8 @@ public class WarriorRageConfig
         WarriorRageConfigData data = new WarriorRageConfigData();
 
         //Overlay
-        data.renderRageOverlay = client.renderRageOverlay;
+        data.renderRageBar = client.renderRageBar;
+        data.renderRageIcon = client.renderRageIcon;
         data.offsetX = client.offsetX;
         data.offsetY = client.offsetY;
 

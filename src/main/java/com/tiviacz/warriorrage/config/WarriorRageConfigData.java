@@ -45,8 +45,12 @@ public class WarriorRageConfigData implements ConfigData
     public int fireDamageRequiredKillCount = 20;
 
     @ConfigEntry.Category("client")
-    @Comment("Render Rage Overlay on experience bar")
-    public boolean renderRageOverlay = true;
+    @Comment("Render Rage Bar on experience bar")
+    public boolean renderRageBar = true;
+
+    @ConfigEntry.Category("client")
+    @Comment("Render Rage Icon next to player's Hotbar")
+    public boolean renderRageIcon = true;
 
     @ConfigEntry.Category("client")
     @Comment("Negative offsets to left side, positive to right")
