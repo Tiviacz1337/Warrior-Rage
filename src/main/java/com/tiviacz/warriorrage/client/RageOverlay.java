@@ -27,9 +27,11 @@ public class RageOverlay
     {
         if(!WarriorRageConfig.CLIENT.renderRageIcon.get() && !WarriorRageConfig.CLIENT.renderRageBar.get()) return;
 
-        Minecraft mc = Minecraft.getInstance();
+        Minecraft mc = gui.getMinecraft();
         Player player = mc.player;
         assert player != null;
+
+        if(mc.gameMode != null && !mc.gameMode.hasExperience()) return;
 
         if(CapabilityUtils.getCapability(player).isPresent())
         {
@@ -70,10 +72,9 @@ public class RageOverlay
     @SubscribeEvent
     public static void registerOverlay(final RegisterGuiOverlaysEvent evt)
     {
-        evt.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "warrior_rage", (gui, poseStack, partialTick, width, height) -> {
-            Minecraft mc = Minecraft.getInstance();
-
-            if (!mc.player.isRidingJumpable() && !mc.options.hideGui)
+        evt.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "warrior_rage_bar", (gui, poseStack, partialTick, width, height) ->
+        {
+            if(!gui.getMinecraft().options.hideGui)
             {
                 renderRageBar(gui, poseStack, partialTick, width, height);
             }
