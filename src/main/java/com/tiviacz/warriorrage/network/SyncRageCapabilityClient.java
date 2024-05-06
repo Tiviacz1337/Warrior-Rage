@@ -6,10 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class SyncRageCapabilityClient
 {
@@ -40,8 +38,8 @@ public class SyncRageCapabilityClient
         buffer.writeInt(message.entityID);
     }
 
-    public static void handle(final SyncRageCapabilityClient message, final Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+    public static void handle(final SyncRageCapabilityClient message, final CustomPayloadEvent.Context ctx) {
+        ctx.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 
             final Player playerEntity = (Player)Minecraft.getInstance().player.level().getEntity(message.entityID);
             IRage cap = CapabilityUtils.getCapability(playerEntity).orElse(null);
@@ -51,6 +49,6 @@ public class SyncRageCapabilityClient
             }
         }));
 
-        ctx.get().setPacketHandled(true);
+        ctx.setPacketHandled(true);
     }
 }

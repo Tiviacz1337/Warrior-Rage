@@ -25,9 +25,11 @@ public class RageOverlay
     {
         if(!WarriorRageConfig.CLIENT.renderRageIcon.get() && !WarriorRageConfig.CLIENT.renderRageBar.get()) return;
 
-        Minecraft mc = Minecraft.getInstance();
+        Minecraft mc = gui.getMinecraft();
         Player player = mc.player;
         assert player != null;
+
+        if(mc.gameMode != null && !mc.gameMode.hasExperience()) return;
 
         if(CapabilityUtils.getCapability(player).isPresent())
         {
@@ -39,10 +41,6 @@ public class RageOverlay
 
                 float durationProgress = (float)rage.getRemainingRageDuration() / Rage.DEFAULT_RAGE_DURATION;
                 int k = (int)(durationProgress * (183.0F));
-
-                //RenderSystem.setShader(GameRenderer::getPositionTexShader);
-                //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                //RenderSystem.setShaderTexture(0, texture);
 
                 if(WarriorRageConfig.CLIENT.renderRageBar.get())
                 {
@@ -68,11 +66,9 @@ public class RageOverlay
     @SubscribeEvent
     public static void registerOverlay(final RegisterGuiOverlaysEvent evt)
     {
-        evt.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "warrior_rage", (gui, guiGraphics, partialTick, width, height) ->
+        evt.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "warrior_rage_bar", (gui, guiGraphics, partialTick, width, height) ->
         {
-            Minecraft mc = Minecraft.getInstance();
-
-            if(mc.player.jumpableVehicle() == null && !mc.options.hideGui)
+            if(!gui.getMinecraft().options.hideGui)
             {
                 renderRageBar(gui, guiGraphics, partialTick, width, height);
             }

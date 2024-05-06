@@ -142,7 +142,7 @@ public class Rage implements IRage
         if(playerEntity != null && !playerEntity.level().isClientSide)
         {
             ServerPlayer serverPlayer = (ServerPlayer)playerEntity;
-            CapabilityUtils.getCapability(serverPlayer).ifPresent(cap -> WarriorRage.NETWORK.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SyncRageCapabilityClient(this.killCount, this.rageDuration, serverPlayer.getId())));
+            CapabilityUtils.getCapability(serverPlayer).ifPresent(cap -> WarriorRage.NETWORK.send(new SyncRageCapabilityClient(this.killCount, this.rageDuration, serverPlayer.getId()), PacketDistributor.PLAYER.with(serverPlayer)));
         }
     }
 
