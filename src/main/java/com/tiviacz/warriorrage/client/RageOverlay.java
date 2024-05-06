@@ -21,9 +21,9 @@ public class RageOverlay
 {
     public static void init()
     {
-        OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, "Warrior Rage Bar Overlay", (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
-            Minecraft mc = Minecraft.getInstance();
-            if (!mc.player.isRidingJumpable() && !mc.options.hideGui)
+        OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, "warrior_rage_bar", (gui, mStack, partialTicks, screenWidth, screenHeight) ->
+        {
+            if(!Minecraft.getInstance().options.hideGui)
             {
                 renderRageBar(gui, mStack, partialTicks, screenWidth, screenHeight);
             }
@@ -37,6 +37,8 @@ public class RageOverlay
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         assert player != null;
+
+        if(mc.gameMode != null && !mc.gameMode.hasExperience()) return;
 
         if(CapabilityUtils.getCapability(player).isPresent())
         {
