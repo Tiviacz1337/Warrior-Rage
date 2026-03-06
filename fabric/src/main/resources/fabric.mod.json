@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "warriorrage",
+  "version": "${mod_version}",
+  "accessWidener": "warriorrage.accesswidener",
+
+  "name": "Warrior Rage",
+  "description": "Brings Kill Streak functionality to combat!",
+  "authors": [
+    "Tiviacz1337"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/warrior-rage",
+    "sources": "https://github.com/Tiviacz1337/Warrior-Rage",
+    "issues": "https://github.com/Tiviacz1337/Warrior-Rage/issues"
+  },
+
+  "license": "All Rights Reserved",
+  "icon": "assets/warriorrage/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.tiviacz.warriorrage.fabric.WarriorRageFabric"
+    ],
+    "client": [
+      "com.tiviacz.warriorrage.fabric.WarriorRageFabricClient"
+    ]
+  },
+  "mixins": [
+    "warriorrage.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "fabric": ">=0.100.3",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "forgeconfigapiport": "*"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "warriorrage.configuration.client": "Client",
+  "warriorrage.configuration.server": "Server",
+  "warriorrage.configuration.renderRageOverlay": "Render Rage Overlay",
+  "warriorrage.configuration.rageOverlayOpacity": "Rage Overlay Opacity",
+  "warriorrage.configuration.renderRageBar": "Render Rage Bar",
+  "warriorrage.configuration.renderRageIcon": "Render Rage Icon",
+  "warriorrage.configuration.renderFireParticles": "Render Fire Particles",
+  "warriorrage.configuration.offsetX": "Icon X Offset",
+  "warriorrage.configuration.offsetY": "Icon Y Offset",
+  "warriorrage.configuration.minimalKillCount": "Minimal Kill Count",
+  "warriorrage.configuration.rageDuration": "Rage Duration",
+  "warriorrage.configuration.maxKillCountCap": "Max Kill Count Cap",
+  "warriorrage.configuration.killIntervalBetweenNextBonus": "Kill Interval Between Next Bonus",
+  "warriorrage.configuration.bonusDamage": "Bonus Damage",
+  "warriorrage.configuration.enableFireDamage": "Enable Fire Damage",
+  "warriorrage.configuration.fireDamageRequiredKillCount": "Fire Damage Required Kill Count",
+  "warriorrage.configuration.onHitEffects": "On Hit Effects",
+  "warriorrage.configuration.playerEffects": "Player Effects"
+}

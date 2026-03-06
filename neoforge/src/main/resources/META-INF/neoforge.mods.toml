@@ -1,0 +1,27 @@
+modLoader = "javafml" #mandatory
+loaderVersion = "${loader_version_range}" #mandatory
+license = "${mod_license}"
+issueTrackerURL="https://github.com/Tiviacz1337/Warrior-Rage/issues"
+logoFile="assets/warriorrage/icon.png"
+
+[[mods]] #mandatory
+modId = "${mod_id}" #mandatory
+version = "${mod_version}" #mandatory
+displayName = "${mod_display_name}" #mandatory
+displayURL="https://www.curseforge.com/minecraft/mc-mods/warrior-rage"
+authors = "${mod_authors}" #optional
+description = '''${mod_description}'''
+
+[[dependencies.${ mod_id }]] #optional
+modId = "neoforge" #mandatory
+type = "required" #mandatory
+versionRange = "${neo_version_range}" #mandatory
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
