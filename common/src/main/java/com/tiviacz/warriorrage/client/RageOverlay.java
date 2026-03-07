@@ -6,7 +6,7 @@ import com.tiviacz.warriorrage.config.WarriorRageConfig;
 import com.tiviacz.warriorrage.platform.Platform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
@@ -37,19 +37,21 @@ public class RageOverlay {
                 int k = (int)(durationProgress * (183.0F));
 
                 if(WarriorRageConfig.CLIENT.renderRageBar.get()) {
-                    guiGraphics.blit(RenderType::guiTextured, texture, screenWidth / 2 - 91, screenHeight - 32 + 3, 0, 69, k, 5, 256, 256);
+                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, screenWidth / 2 - 91, screenHeight - 32 + 3, 0, 69, k, 5, 256, 256);
                 }
 
                 if(WarriorRageConfig.CLIENT.renderRageIcon.get()) {
-                    guiGraphics.blit(RenderType::guiTextured, texture, screenWidth / 2 + 94 + WarriorRageConfig.CLIENT.offsetX.get(), screenHeight - 32 + 16 + WarriorRageConfig.CLIENT.offsetY.get(), 0, 0, 14, 14, 256, 256);
+                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, screenWidth / 2 + 94 + WarriorRageConfig.CLIENT.offsetX.get(), screenHeight - 32 + 16 + WarriorRageConfig.CLIENT.offsetY.get(), 0, 0, 14, 14, 256, 256);
                     String s = "" + rage.getCurrentKillCount();
                     int i1 = (screenWidth - mc.font.width(s)) / 2 + 115 + WarriorRageConfig.CLIENT.offsetX.get();
                     int j1 = screenHeight - 31 + 18 + WarriorRageConfig.CLIENT.offsetY.get();
-                    guiGraphics.drawString(mc.font, s, (i1 + 1), j1, 0, false);
-                    guiGraphics.drawString(mc.font, s, (i1 - 1), j1, 0, false);
-                    guiGraphics.drawString(mc.font, s, i1, (j1 + 1), 0, false);
-                    guiGraphics.drawString(mc.font, s, i1, (j1 - 1), 0, false);
-                    guiGraphics.drawString(mc.font, s, i1, j1, 6362132, false);
+                    guiGraphics.enableScissor(i1 - 25, j1 - 25, i1 + 25, j1 + 25);
+                    guiGraphics.drawString(mc.font, s, (i1 + 1), j1, 0xFF000000, false);
+                    guiGraphics.drawString(mc.font, s, (i1 - 1), j1, 0xFF000000, false);
+                    guiGraphics.drawString(mc.font, s, i1, (j1 + 1), 0xFF000000, false);
+                    guiGraphics.drawString(mc.font, s, i1, (j1 - 1), 0xFF000000, false);
+                    guiGraphics.drawString(mc.font, s, i1, j1, 0xFF611414, false);
+                    guiGraphics.disableScissor();
                 }
 
                 int maxKills = rage.MAX_KILL_COUNT_CAP;
@@ -82,6 +84,6 @@ public class RageOverlay {
 
     private static void renderTextureOverlay(GuiGraphics guiGraphics, ResourceLocation shaderLocation, float alpha) {
         int i = ARGB.white(alpha);
-        guiGraphics.blit(RenderType::guiTexturedOverlay, shaderLocation, 0, 0, 0.0F, 0.0F, guiGraphics.guiWidth(), guiGraphics.guiHeight(), guiGraphics.guiWidth(), guiGraphics.guiHeight(), i);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, shaderLocation, 0, 0, 0.0F, 0.0F, guiGraphics.guiWidth(), guiGraphics.guiHeight(), guiGraphics.guiWidth(), guiGraphics.guiHeight(), i);
     }
 }

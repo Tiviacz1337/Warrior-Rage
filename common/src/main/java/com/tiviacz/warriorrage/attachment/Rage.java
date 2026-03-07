@@ -1,6 +1,7 @@
 package com.tiviacz.warriorrage.attachment;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tiviacz.warriorrage.WarriorRage;
 import com.tiviacz.warriorrage.config.WarriorRageConfig;
@@ -21,9 +22,11 @@ public class Rage {
     public static final String DURATION = "Duration";
     public int MAX_KILL_COUNT_CAP = WarriorRageConfig.SERVER.maxKillCountCap.get();
     public double BASE_MULTIPLIER = WarriorRageConfig.SERVER.bonusDamage.get();
-    public static final Codec<Rage> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<Rage> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf(DURATION).forGetter(Rage::getRemainingRageDuration),
-            Codec.INT.fieldOf(KILL_COUNT).forGetter(Rage::getCurrentKillCount)).apply(instance, Rage::new));
+            Codec.INT.fieldOf(KILL_COUNT).forGetter(Rage::getCurrentKillCount)
+    ).apply(instance, Rage::new));
+    public static final Codec<Rage> CODEC = MAP_CODEC.codec();
     public static final StreamCodec<FriendlyByteBuf, Rage> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, Rage::getRemainingRageDuration,
             ByteBufCodecs.INT, Rage::getCurrentKillCount,

@@ -12,5 +12,5 @@ public class ModAttachmentTypes {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, WarriorRage.MODID);
 
     public static final Supplier<AttachmentType<Rage>> RAGE = ATTACHMENT_TYPES.register("rage",
-            () -> AttachmentType.builder(() -> new Rage(0, 0)).serialize(Rage.CODEC).build());
+            () -> AttachmentType.builder(() -> new Rage(0, 0)).serialize(Rage.MAP_CODEC).sync(Rage.STREAM_CODEC).build());
 }

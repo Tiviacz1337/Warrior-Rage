@@ -12,21 +12,13 @@ public class PlatformImpl {
         return Optional.ofNullable(player.getAttachedOrCreate(ModAttachmentTypes.RAGE));
     }
 
-    public static void setAttachment(Player player, Rage rage) {
-        player.setAttached(ModAttachmentTypes.RAGE, rage);
-    }
-
     public static void modifyAttachment(Player player, Consumer<Rage> rageConsumer) {
         player.modifyAttached(ModAttachmentTypes.RAGE, rage -> {
             if(rage == null) {
                 rage = new Rage(0, 0);
             }
             rageConsumer.accept(rage);
-            return rage;
+            return new Rage(rage.getRemainingRageDuration(), rage.getCurrentKillCount());
         });
-    }
-
-    public static void synchronise(Player player) {
-
     }
 }
