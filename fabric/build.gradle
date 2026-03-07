@@ -60,11 +60,11 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive = false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
-    modImplementation("maven.modrinth:forge-config-api-port:YbUUjWdw")
+    modImplementation("maven.modrinth:forge-config-api-port:IKHTwwTv")
     api 'com.electronwill.night-config:core:3.8.1'
     api 'com.electronwill.night-config:toml:3.8.1'
 
-    modImplementation("maven.modrinth:modmenu:kiOz1Uxm")
+    modImplementation("maven.modrinth:modmenu:QuU0ciaR")
 }
 
 processResources {

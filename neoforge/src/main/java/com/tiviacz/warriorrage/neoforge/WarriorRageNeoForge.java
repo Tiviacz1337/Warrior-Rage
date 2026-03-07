@@ -18,7 +18,7 @@ public class WarriorRageNeoForge {
         WarriorRage.init();
         modContainer.registerConfig(ModConfig.Type.SERVER, WarriorRageConfig.serverSpec);
         modContainer.registerConfig(ModConfig.Type.CLIENT, WarriorRageConfig.clientSpec);
-        if(FMLEnvironment.dist == Dist.CLIENT)
+        if(FMLEnvironment.getDist() == Dist.CLIENT)
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 
         ModAttachmentTypes.ATTACHMENT_TYPES.register(eventBus);
