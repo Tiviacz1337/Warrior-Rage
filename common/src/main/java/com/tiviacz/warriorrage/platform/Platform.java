@@ -14,11 +14,6 @@ public class Platform {
     }
 
     @ExpectPlatform
-    public static void setAttachment(Player player, Rage rage) {
-
-    }
-
-    @ExpectPlatform
     public static void modifyAttachment(Player player, Consumer<Rage> rageConsumer) {
 
     }
