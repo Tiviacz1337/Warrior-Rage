@@ -9,7 +9,7 @@ import com.tiviacz.warriorrage.util.OnHitEffect;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -17,7 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
 public class Rage {
-    public static final ResourceLocation RAGE = ResourceLocation.fromNamespaceAndPath(WarriorRage.MODID, "rage_bonus_damage");
+    public static final Identifier RAGE = Identifier.fromNamespaceAndPath(WarriorRage.MODID, "rage_bonus_damage");
     public static final String KILL_COUNT = "KillCount";
     public static final String DURATION = "Duration";
     public int MAX_KILL_COUNT_CAP = WarriorRageConfig.SERVER.maxKillCountCap.get();

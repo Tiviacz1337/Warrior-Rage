@@ -7,13 +7,13 @@ import com.tiviacz.warriorrage.platform.Platform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 
 public class RageOverlay {
-    public static final ResourceLocation RAGE_OVERLAY = ResourceLocation.fromNamespaceAndPath(WarriorRage.MODID, "textures/gui/warrior_rage_overlay.png");
+    public static final Identifier RAGE_OVERLAY = Identifier.fromNamespaceAndPath(WarriorRage.MODID, "textures/gui/warrior_rage_overlay.png");
 
     private static float currentAlpha = 0.0F;
 
@@ -31,7 +31,7 @@ public class RageOverlay {
         Platform.getAttachment(player).ifPresent(rage -> {
             float targetAlpha = 0.0F;
             if(rage.isInRage()) {
-                ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(WarriorRage.MODID, "textures/gui/warrior_rage_bar.png");
+                Identifier texture = Identifier.fromNamespaceAndPath(WarriorRage.MODID, "textures/gui/warrior_rage_bar.png");
 
                 float durationProgress = (float)rage.getRemainingRageDuration() / rage.getDefaultRageDuration();
                 int k = (int)(durationProgress * (183.0F));
@@ -82,7 +82,7 @@ public class RageOverlay {
         });
     }
 
-    private static void renderTextureOverlay(GuiGraphics guiGraphics, ResourceLocation shaderLocation, float alpha) {
+    private static void renderTextureOverlay(GuiGraphics guiGraphics, Identifier shaderLocation, float alpha) {
         int i = ARGB.white(alpha);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, shaderLocation, 0, 0, 0.0F, 0.0F, guiGraphics.guiWidth(), guiGraphics.guiHeight(), guiGraphics.guiWidth(), guiGraphics.guiHeight(), i);
     }

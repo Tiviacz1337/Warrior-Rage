@@ -11,7 +11,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 
@@ -25,6 +25,6 @@ public class WarriorRageFabricClient implements ClientModInitializer {
     }
 
     public static void registerRageOverlay() {
-        HudElementRegistry.attachElementAfter(VanillaHudElements.EXPERIENCE_LEVEL, ResourceLocation.fromNamespaceAndPath(WarriorRage.MODID, "rage"), (guiGraphics, deltaTracker) -> RageOverlay.renderOverlay(Minecraft.getInstance(), guiGraphics));
+        HudElementRegistry.attachElementAfter(VanillaHudElements.EXPERIENCE_LEVEL, Identifier.fromNamespaceAndPath(WarriorRage.MODID, "rage"), (guiGraphics, deltaTracker) -> RageOverlay.renderOverlay(Minecraft.getInstance(), guiGraphics));
     }
 }

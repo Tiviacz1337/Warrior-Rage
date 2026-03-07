@@ -3,7 +3,7 @@ package com.tiviacz.warriorrage.config;
 import com.google.common.collect.Sets;
 import com.tiviacz.warriorrage.util.OnHitEffect;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -151,7 +151,7 @@ public class WarriorRageConfig {
         targetList.clear();
         for(String configEntry : configList) {
             String[] onHitEffect = configEntry.replace(" ", "").split(",");
-            ResourceLocation res = ResourceLocation.tryParse(onHitEffect[0]);
+            Identifier res = Identifier.tryParse(onHitEffect[0]);
             int requiredKillCount = Integer.parseInt(onHitEffect[1]);
             int duration = Integer.parseInt(onHitEffect[2]);
             int amplifier = Integer.parseInt(onHitEffect[3]);
