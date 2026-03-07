@@ -48,6 +48,33 @@ jobs:
         run: ./gradlew :${{ inputs.loader }}:clean :${{ inputs.loader }}:build
 
       - name: Publish (CurseForge/Modrinth)
+        if: inputs.loader == 'fabric'
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          curseforge-id: 631764
+          modrinth-id: 1BGsoydA
+
+          files: ${{ inputs.loader }}/build/libs/warriorrage-${{ inputs.loader }}-${{ env.VERSION }}.jar
+
+          curseforge-token: "${{ env.CURSEFORGE_TOKEN }}"
+          modrinth-token: "${{ env.MODRINTH_TOKEN }}"
+
+          modrinth-name: ${{ env.RELEASE_NAME_MODRINTH }}
+          curseforge-name: ${{ env.RELEASE_NAME_CURSEFORGE }}
+          version: "${{ env.VERSION }}"
+          version-type: release
+          changelog-file: ${{ inputs.loader }}/CHANGELOG.md
+
+          loaders: ${{ inputs.loader }}
+          game-versions: "${{ env.MINECRAFT_VERSION }}"
+          dependencies: |
+            fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}
+            forge-config-api-port(required){modrinth:ohNO6lps}{curseforge:547434}
+
+          java: "${{ env.JAVA_VERSION }}"
+
+      - name: Publish (CurseForge/Modrinth)
+        if: inputs.loader == 'neoforge'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           curseforge-id: 631764
