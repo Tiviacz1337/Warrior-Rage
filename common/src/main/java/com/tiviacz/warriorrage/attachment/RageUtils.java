@@ -23,6 +23,7 @@ public class RageUtils {
                         rage.removeRageEffects(player);
                     }
                 });
+                Platform.synchronise(player);
             }
         }
     }
@@ -36,6 +37,7 @@ public class RageUtils {
                 rage.decreaseRageDuration();
             } else {
                 Platform.modifyAttachment(player, synced -> synced.removeRageEffects(player));
+                Platform.synchronise(player);
             }
         });
     }

@@ -155,7 +155,7 @@ public class WarriorRageConfig {
             int requiredKillCount = Integer.parseInt(onHitEffect[1]);
             int duration = Integer.parseInt(onHitEffect[2]);
             int amplifier = Integer.parseInt(onHitEffect[3]);
-            BuiltInRegistries.MOB_EFFECT.getHolder(res).ifPresent(holder -> targetList.add(new OnHitEffect(requiredKillCount, duration, amplifier, holder)));
+            BuiltInRegistries.MOB_EFFECT.get(res).ifPresent(holder -> targetList.add(new OnHitEffect(requiredKillCount, duration, amplifier, holder)));
         }
     }
 

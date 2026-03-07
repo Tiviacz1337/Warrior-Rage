@@ -49,7 +49,7 @@ subprojects {
         // Use mojmap with ParchmentMC
         mappings loom.layered() {
             officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:2024.11.17@zip")
+            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:2025.06.15@zip")
         }
     }
 

@@ -25,4 +25,8 @@ public class PlatformImpl {
             return rage;
         });
     }
+
+    public static void synchronise(Player player) {
+
+    }
 }

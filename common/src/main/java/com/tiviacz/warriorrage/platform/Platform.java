@@ -22,4 +22,9 @@ public class Platform {
     public static void modifyAttachment(Player player, Consumer<Rage> rageConsumer) {
 
     }
+
+    @ExpectPlatform
+    public static void synchronise(Player player) {
+
+    }
 }
