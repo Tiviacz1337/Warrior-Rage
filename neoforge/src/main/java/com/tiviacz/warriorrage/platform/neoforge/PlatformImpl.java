@@ -14,10 +14,6 @@ public class PlatformImpl {
         return Optional.ofNullable(player.getData(ModAttachmentTypes.RAGE));
     }
 
-    public static void setAttachment(Player player, Rage rage) {
-        player.setData(ModAttachmentTypes.RAGE, rage);
-    }
-
     public static void modifyAttachment(Player player, Consumer<Rage> rageConsumer) {
         getAttachment(player).ifPresent(rage -> {
             rageConsumer.accept(rage);
