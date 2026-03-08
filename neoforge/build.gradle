@@ -16,8 +16,6 @@ configurations {
     runtimeClasspath.extendsFrom common
     developmentNeoForge.extendsFrom common
 
-    // Files in this configuration will be bundled into your mod using the Shadow plugin.
-    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
     shadowBundle {
         canBeResolved = true
         canBeConsumed = false
@@ -54,16 +52,24 @@ processResources {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
+            neoforge_version       : neoforge_version,
+            neoforge_version_range : neoforge_version_range,
             loader_version_range   : loader_version_range,
+            mod_issue_tracker      : mod_issue_tracker,
+            mod_source             : mod_source,
+            mod_url                : mod_url,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_display_name       : mod_display_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
             mod_authors            : mod_authors,
-            mod_description        : mod_description
+            mod_description        : mod_description,
+            fabric_loader_dep      : fabric_loader_dep,
+            fabric_api_dep         : fabric_api_dep,
+            minecraft_dep          : minecraft_dep,
+            java_dep               : java_dep,
+            forgeconfigapiport_dep : forgeconfigapiport_dep
     ]
     inputs.properties replaceProperties
 
@@ -80,5 +86,5 @@ shadowJar {
 
 remapJar {
     inputFile.set shadowJar.archiveFile
-    atAccessWideners.add("warriorrage.accesswidener")
+    atAccessWideners.add("${rootProject.mod_id}.accesswidener")
 }
