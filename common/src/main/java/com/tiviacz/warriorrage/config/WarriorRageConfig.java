@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import com.tiviacz.warriorrage.util.OnHitEffect;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -15,17 +15,17 @@ public class WarriorRageConfig {
     private static final String ON_HIT_EFFECT_MATCHER = "([a-z0-9_.-]+:[a-z0-9_/.-]+),\\s*(100|[1-9][0-9]?),\\s*(1000|[1-39][0-9]{0,2}),\\s*(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
 
     public static class Server {
-        public final ModConfigSpec.IntValue minimalKillCount;
-        public final ModConfigSpec.IntValue rageDuration;
-        public final ModConfigSpec.IntValue maxKillCountCap;
-        public final ModConfigSpec.IntValue killIntervalBetweenNextBonus;
-        public final ModConfigSpec.DoubleValue bonusDamage;
-        public final ModConfigSpec.BooleanValue enableFireDamage;
-        public final ModConfigSpec.IntValue fireDamageRequiredKillCount;
-        public final ModConfigSpec.ConfigValue<List<? extends String>> onHitEffects;
-        public final ModConfigSpec.ConfigValue<List<? extends String>> playerEffects;
+        public final ForgeConfigSpec.IntValue minimalKillCount;
+        public final ForgeConfigSpec.IntValue rageDuration;
+        public final ForgeConfigSpec.IntValue maxKillCountCap;
+        public final ForgeConfigSpec.IntValue killIntervalBetweenNextBonus;
+        public final ForgeConfigSpec.DoubleValue bonusDamage;
+        public final ForgeConfigSpec.BooleanValue enableFireDamage;
+        public final ForgeConfigSpec.IntValue fireDamageRequiredKillCount;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> onHitEffects;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> playerEffects;
 
-        Server(ModConfigSpec.Builder builder) {
+        Server(ForgeConfigSpec.Builder builder) {
             builder.comment("Server config settings")
                     .push("server");
 
@@ -60,27 +60,27 @@ public class WarriorRageConfig {
             onHitEffects = builder
                     .comment("List of effects that are being applied on hit, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-1000)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:slowness, 5, 40, 1'")
                     .worldRestart()
-                    .defineList("onHitEffects", new ArrayList<>(), () -> "", mapping -> ((String)mapping).matches(ON_HIT_EFFECT_MATCHER));
+                    .defineList("onHitEffects", new ArrayList<>(), mapping -> ((String)mapping).matches(ON_HIT_EFFECT_MATCHER));
 
             playerEffects = builder
                     .comment("List of effects that are being applied to player, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-1000)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:regeneration, 15, 40, 1'")
                     .worldRestart()
-                    .defineList("playerEffects", new ArrayList<>(), () -> "", mapping -> ((String)mapping).matches(ON_HIT_EFFECT_MATCHER));
+                    .defineList("playerEffects", new ArrayList<>(), mapping -> ((String)mapping).matches(ON_HIT_EFFECT_MATCHER));
 
             builder.pop();
         }
     }
 
     public static class Client {
-        public final ModConfigSpec.BooleanValue renderRageOverlay;
-        public final ModConfigSpec.DoubleValue rageOverlayOpacity;
-        public final ModConfigSpec.BooleanValue renderRageBar;
-        public final ModConfigSpec.BooleanValue renderRageIcon;
-        public final ModConfigSpec.BooleanValue renderFireParticles;
-        public final ModConfigSpec.IntValue offsetX;
-        public final ModConfigSpec.IntValue offsetY;
+        public final ForgeConfigSpec.BooleanValue renderRageOverlay;
+        public final ForgeConfigSpec.DoubleValue rageOverlayOpacity;
+        public final ForgeConfigSpec.BooleanValue renderRageBar;
+        public final ForgeConfigSpec.BooleanValue renderRageIcon;
+        public final ForgeConfigSpec.BooleanValue renderFireParticles;
+        public final ForgeConfigSpec.IntValue offsetX;
+        public final ForgeConfigSpec.IntValue offsetY;
 
-        Client(ModConfigSpec.Builder builder) {
+        Client(ForgeConfigSpec.Builder builder) {
             builder.comment("Client-only settings")
                     .push("client");
 
@@ -117,21 +117,21 @@ public class WarriorRageConfig {
     }
 
     //COMMON
-    public static final ModConfigSpec serverSpec;
+    public static final ForgeConfigSpec serverSpec;
     public static final Server SERVER;
 
     static {
-        final Pair<Server, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Server::new);
+        final Pair<Server, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Server::new);
         serverSpec = specPair.getRight();
         SERVER = specPair.getLeft();
     }
 
     //CLIENT
-    public static final ModConfigSpec clientSpec;
+    public static final ForgeConfigSpec clientSpec;
     public static final Client CLIENT;
 
     static {
-        final Pair<Client, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Client::new);
+        final Pair<Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Client::new);
         clientSpec = specPair.getRight();
         CLIENT = specPair.getLeft();
     }
@@ -155,7 +155,7 @@ public class WarriorRageConfig {
             int requiredKillCount = Integer.parseInt(onHitEffect[1]);
             int duration = Integer.parseInt(onHitEffect[2]);
             int amplifier = Integer.parseInt(onHitEffect[3]);
-            BuiltInRegistries.MOB_EFFECT.getHolder(res).ifPresent(holder -> targetList.add(new OnHitEffect(requiredKillCount, duration, amplifier, holder)));
+            BuiltInRegistries.MOB_EFFECT.getOptional(res).ifPresent(mobEffect -> targetList.add(new OnHitEffect(requiredKillCount, duration, amplifier, mobEffect)));
         }
     }
 

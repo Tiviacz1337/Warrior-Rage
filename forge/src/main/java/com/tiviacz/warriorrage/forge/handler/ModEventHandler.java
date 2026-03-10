@@ -1,12 +1,12 @@
-package com.tiviacz.warriorrage.neoforge.handler;
+package com.tiviacz.warriorrage.forge.handler;
 
 import com.tiviacz.warriorrage.WarriorRage;
 import com.tiviacz.warriorrage.config.WarriorRageConfig;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.config.ModConfigEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
-@EventBusSubscriber(modid = WarriorRage.MODID)
+@Mod.EventBusSubscriber(modid = WarriorRage.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventHandler {
     @SubscribeEvent
     public static void onModConfigLoad(ModConfigEvent.Loading configEvent) {

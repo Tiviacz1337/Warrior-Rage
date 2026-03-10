@@ -1,6 +1,7 @@
 package com.tiviacz.warriorrage.platform;
 
 import com.tiviacz.warriorrage.attachment.Rage;
+import com.tiviacz.warriorrage.network.IPacket;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.world.entity.player.Player;
 
@@ -15,6 +16,11 @@ public class Platform {
 
     @ExpectPlatform
     public static void modifyAttachment(Player player, Consumer<Rage> rageConsumer) {
+
+    }
+
+    @ExpectPlatform
+    public static void synchronise(Player player) {
 
     }
 }

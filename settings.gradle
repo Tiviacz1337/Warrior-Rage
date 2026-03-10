@@ -7,8 +7,8 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'warriorrage'
+rootProject.name = mod_id
 
 include 'common'
 include 'fabric'
-include 'neoforge'
+include 'forge'

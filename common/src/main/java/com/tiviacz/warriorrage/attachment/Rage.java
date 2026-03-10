@@ -5,9 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tiviacz.warriorrage.WarriorRage;
 import com.tiviacz.warriorrage.config.WarriorRageConfig;
 import com.tiviacz.warriorrage.util.OnHitEffect;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -15,8 +12,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.UUID;
+
 public class Rage {
-    public static final ResourceLocation RAGE = ResourceLocation.fromNamespaceAndPath(WarriorRage.MODID, "rage_bonus_damage");
+    private static final UUID RAGE_UUID = UUID.fromString("6e982d48-e5e6-11ec-8fea-0242ac120002");
+    public static final ResourceLocation RAGE = new ResourceLocation(WarriorRage.MODID, "rage_bonus_damage");
     public static final String KILL_COUNT = "KillCount";
     public static final String DURATION = "Duration";
     public int MAX_KILL_COUNT_CAP = WarriorRageConfig.SERVER.maxKillCountCap.get();
@@ -24,11 +24,6 @@ public class Rage {
     public static final Codec<Rage> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf(DURATION).forGetter(Rage::getRemainingRageDuration),
             Codec.INT.fieldOf(KILL_COUNT).forGetter(Rage::getCurrentKillCount)).apply(instance, Rage::new));
-    public static final StreamCodec<FriendlyByteBuf, Rage> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, Rage::getRemainingRageDuration,
-            ByteBufCodecs.INT, Rage::getCurrentKillCount,
-            Rage::new
-    );
     private int rageDuration;
     private int killCount;
 
@@ -38,11 +33,11 @@ public class Rage {
     }
 
     public void startRage(Player player) {
-        AttributeModifier attackDamageModifier = new AttributeModifier(RAGE, calculateBonusDamage(this.killCount, BASE_MULTIPLIER), AttributeModifier.Operation.ADD_VALUE);
+        AttributeModifier attackDamageModifier = new AttributeModifier(RAGE.getPath(), calculateBonusDamage(this.killCount, BASE_MULTIPLIER), AttributeModifier.Operation.ADDITION);
         AttributeInstance attribute = player.getAttribute(Attributes.ATTACK_DAMAGE);
-        if(attribute.getModifier(RAGE) != null) {
-            if(attribute.getModifier(RAGE).amount() != attackDamageModifier.amount()) {
-                attribute.removeModifier(RAGE);
+        if(attribute.getModifier(RAGE_UUID) != null) {
+            if(attribute.getModifier(RAGE_UUID).getAmount() != attackDamageModifier.getAmount()) {
+                attribute.removeModifier(RAGE_UUID);
                 attribute.addPermanentModifier(attackDamageModifier);
             }
         } else {
@@ -50,7 +45,7 @@ public class Rage {
         }
         for(OnHitEffect effect : WarriorRageConfig.PLAYER_EFFECTS) {
             if(getCurrentKillCount() == effect.requiredKillCount()) {
-                player.addEffect(new MobEffectInstance(effect.mobEffectHolder(), effect.duration(), effect.amplifier(), true, true, true));
+                player.addEffect(new MobEffectInstance(effect.mobEffect(), effect.duration(), effect.amplifier(), true, true, true));
             }
         }
     }
@@ -88,8 +83,8 @@ public class Rage {
     }
 
     public void removeRageEffects(Player player) {
-        if(player.getAttribute(Attributes.ATTACK_DAMAGE).getModifier(RAGE) != null) {
-            player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(RAGE);
+        if(player.getAttribute(Attributes.ATTACK_DAMAGE).getModifier(RAGE_UUID) != null) {
+            player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(RAGE_UUID);
         }
     }
 
@@ -113,6 +108,10 @@ public class Rage {
                 refreshRageDuration();
             }
         }
+    }
+
+    public void setKillCountFlat(int count) {
+        this.killCount = count;
     }
 
     public void setRageDuration(int timeInTicks) {

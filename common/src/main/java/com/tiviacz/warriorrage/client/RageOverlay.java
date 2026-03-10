@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 
 public class RageOverlay {
-    public static final ResourceLocation RAGE_OVERLAY = ResourceLocation.fromNamespaceAndPath(WarriorRage.MODID, "textures/gui/warrior_rage_overlay.png");
+    public static final ResourceLocation RAGE_OVERLAY = new ResourceLocation(WarriorRage.MODID, "textures/gui/warrior_rage_overlay.png");
 
     private static float currentAlpha = 0.0F;
 
@@ -30,7 +30,7 @@ public class RageOverlay {
         Platform.getAttachment(player).ifPresent(rage -> {
             float targetAlpha = 0.0F;
             if(rage.isInRage()) {
-                ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(WarriorRage.MODID, "textures/gui/warrior_rage_bar.png");
+                ResourceLocation texture = new ResourceLocation(WarriorRage.MODID, "textures/gui/warrior_rage_bar.png");
 
                 float durationProgress = (float)rage.getRemainingRageDuration() / rage.getDefaultRageDuration();
                 int k = (int)(durationProgress * (183.0F));

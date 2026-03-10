@@ -17,7 +17,7 @@ public class ModEventUtils {
             if(target instanceof LivingEntity livingTarget) {
                 for(OnHitEffect effect : WarriorRageConfig.ON_HIT_EFFECTS) {
                     if(rage.getCurrentKillCount() >= effect.requiredKillCount()) {
-                        livingTarget.addEffect(new MobEffectInstance(effect.mobEffectHolder(), effect.duration(), effect.amplifier(), true, true, true));
+                        livingTarget.addEffect(new MobEffectInstance(effect.mobEffect(), effect.duration(), effect.amplifier(), true, true, true));
                     }
                 }
             }

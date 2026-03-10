@@ -1,6 +1,7 @@
 package com.tiviacz.warriorrage.attachment;
 
 import com.tiviacz.warriorrage.config.WarriorRageConfig;
+import com.tiviacz.warriorrage.network.ClientboundSyncRagePacket;
 import com.tiviacz.warriorrage.platform.Platform;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,6 +24,7 @@ public class RageUtils {
                         rage.removeRageEffects(player);
                     }
                 });
+                Platform.synchronise(player);
             }
         }
     }
@@ -36,6 +38,7 @@ public class RageUtils {
                 rage.decreaseRageDuration();
             } else {
                 Platform.modifyAttachment(player, synced -> synced.removeRageEffects(player));
+                Platform.synchronise(player);
             }
         });
     }
