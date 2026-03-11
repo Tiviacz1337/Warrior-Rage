@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 public class WarriorRageConfig {
-    private static final String ON_HIT_EFFECT_MATCHER = "([a-z0-9_.-]+:[a-z0-9_/.-]+),\\s*(100|[1-9][0-9]?),\\s*(1000|[1-39][0-9]{0,2}),\\s*(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
+    private static final String ON_HIT_EFFECT_MATCHER = "([a-z0-9_.-]+:[a-z0-9_/.-]+),\\s*(100|[1-9][0-9]?),\\s*([1-9][0-9]{0,2}),\\s*(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
 
     public static class Server {
         public final ForgeConfigSpec.IntValue minimalKillCount;
@@ -58,12 +58,12 @@ public class WarriorRageConfig {
                     .defineInRange("fireDamageRequiredKillCount", 20, 0, 1000);
 
             onHitEffects = builder
-                    .comment("List of effects that are being applied on hit, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-1000)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:slowness, 5, 40, 1'")
+                    .comment("List of effects that are being applied on hit, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-999)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:slowness, 5, 40, 1'")
                     .worldRestart()
                     .defineList("onHitEffects", new ArrayList<>(), mapping -> ((String)mapping).matches(ON_HIT_EFFECT_MATCHER));
 
             playerEffects = builder
-                    .comment("List of effects that are being applied to player, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-1000)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:regeneration, 15, 40, 1'")
+                    .comment("List of effects that are being applied to player, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-999)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:regeneration, 15, 40, 1'")
                     .worldRestart()
                     .defineList("playerEffects", new ArrayList<>(), mapping -> ((String)mapping).matches(ON_HIT_EFFECT_MATCHER));
 

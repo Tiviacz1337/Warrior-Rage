@@ -26,32 +26,20 @@ public class Rage {
             Codec.INT.fieldOf(KILL_COUNT).forGetter(Rage::getCurrentKillCount)).apply(instance, Rage::new));
     private int rageDuration;
     private int killCount;
+    private boolean inRage;
 
     public Rage(int rageDuration, int killCount) {
         this.rageDuration = rageDuration;
         this.killCount = killCount;
+        this.inRage = rageDuration > 0 && killCount > WarriorRageConfig.SERVER.minimalKillCount.get();
     }
 
-    public void startRage(Player player) {
-        AttributeModifier attackDamageModifier = new AttributeModifier(RAGE.getPath(), calculateBonusDamage(this.killCount, BASE_MULTIPLIER), AttributeModifier.Operation.ADDITION);
-        AttributeInstance attribute = player.getAttribute(Attributes.ATTACK_DAMAGE);
-        if(attribute.getModifier(RAGE_UUID) != null) {
-            if(attribute.getModifier(RAGE_UUID).getAmount() != attackDamageModifier.getAmount()) {
-                attribute.removeModifier(RAGE_UUID);
-                attribute.addPermanentModifier(attackDamageModifier);
-            }
-        } else {
-            attribute.addPermanentModifier(attackDamageModifier);
-        }
-        for(OnHitEffect effect : WarriorRageConfig.PLAYER_EFFECTS) {
-            if(getCurrentKillCount() == effect.requiredKillCount()) {
-                player.addEffect(new MobEffectInstance(effect.mobEffect(), effect.duration(), effect.amplifier(), true, true, true));
-            }
-        }
+    public void refreshInRageStatus() {
+        this.inRage = this.rageDuration > 0 && this.killCount > WarriorRageConfig.SERVER.minimalKillCount.get();
     }
 
     public boolean isInRage() {
-        return this.killCount >= WarriorRageConfig.SERVER.minimalKillCount.get() && getRemainingRageDuration() > 0;
+        return this.inRage;
     }
 
     public double calculateBonusDamage(int killCount, double multiplier) {
@@ -71,20 +59,41 @@ public class Rage {
             this.killCount += count;
         }
         refreshRageDuration();
+        if(!this.inRage) {
+            refreshInRageStatus();
+        }
+    }
+
+    public void addAttributes(Player player) {
+        AttributeModifier attackDamageModifier = new AttributeModifier(RAGE_UUID, RAGE.getPath(), calculateBonusDamage(this.killCount, BASE_MULTIPLIER), AttributeModifier.Operation.ADDITION);
+        AttributeInstance attribute = player.getAttribute(Attributes.ATTACK_DAMAGE);
+        if(attribute.getModifier(RAGE_UUID) != null) {
+            if(attribute.getModifier(RAGE_UUID).getAmount() != attackDamageModifier.getAmount()) {
+                attribute.removeModifier(RAGE_UUID);
+                attribute.addPermanentModifier(attackDamageModifier);
+            }
+        } else {
+            attribute.addPermanentModifier(attackDamageModifier);
+        }
+        for(OnHitEffect effect : WarriorRageConfig.PLAYER_EFFECTS) {
+            if(getCurrentKillCount() == effect.requiredKillCount()) {
+                player.addEffect(new MobEffectInstance(effect.mobEffect(), effect.duration(), effect.amplifier(), true, true, true));
+            }
+        }
+    }
+
+    public void removeAttributes(Player player) {
+        if(player.getAttribute(Attributes.ATTACK_DAMAGE).getModifier(RAGE_UUID) != null) {
+            player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(RAGE_UUID);
+        }
     }
 
     public void decreaseRageDuration() {
         if(this.rageDuration > 0) {
             this.rageDuration -= 1;
         }
-        if(rageDuration == 0) {
-            this.killCount = 0;
-        }
-    }
-
-    public void removeRageEffects(Player player) {
-        if(player.getAttribute(Attributes.ATTACK_DAMAGE).getModifier(RAGE_UUID) != null) {
-            player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(RAGE_UUID);
+        if(this.rageDuration == 0) {
+            refreshInRageStatus();
         }
     }
 
@@ -102,15 +111,18 @@ public class Rage {
         if(count > MAX_KILL_COUNT_CAP) {
             this.killCount = MAX_KILL_COUNT_CAP;
             refreshRageDuration();
-        } else if(count >= 0) {
+        } else {
             this.killCount = count;
             if(count > 0) {
                 refreshRageDuration();
             }
+            if(!this.inRage) {
+                refreshInRageStatus();
+            }
         }
     }
 
-    public void setKillCountFlat(int count) {
+    public void setKillCountNoLogic(int count) {
         this.killCount = count;
     }
 

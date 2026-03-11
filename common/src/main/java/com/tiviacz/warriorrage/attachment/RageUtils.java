@@ -19,9 +19,7 @@ public class RageUtils {
                 Platform.modifyAttachment(player, rage -> {
                     rage.addKill(1);
                     if(rage.isInRage()) {
-                        rage.startRage(player);
-                    } else {
-                        rage.removeRageEffects(player);
+                        rage.addAttributes(player);
                     }
                 });
                 Platform.synchronise(player);
@@ -29,16 +27,27 @@ public class RageUtils {
         }
     }
 
+    private static boolean rageRemoved = true;
+
     public static void tick(Player player) {
         Platform.getAttachment(player).ifPresent(rage -> {
             if(rage.isInRage()) {
                 addParticlesAroundSelf(ParticleTypes.FLAME, player);
                 rage.decreaseRageDuration();
-            } else if(rage.getRemainingRageDuration() > 0 && rage.getCurrentKillCount() < WarriorRageConfig.SERVER.minimalKillCount.get()) {
-                rage.decreaseRageDuration();
+                rageRemoved = false;
             } else {
-                Platform.modifyAttachment(player, synced -> synced.removeRageEffects(player));
-                Platform.synchronise(player);
+                if(!rageRemoved) {
+                    Platform.modifyAttachment(player, synced -> {
+                        synced.removeAttributes(player);
+                        synced.setKillCount(0);
+                    });
+                    Platform.synchronise(player);
+                    rageRemoved = true;
+                }
+            }
+            //Decrease if not in rage yet
+            if(!rage.isInRage() && rage.getCurrentKillCount() > 0) {
+                rage.decreaseRageDuration();
             }
         });
     }

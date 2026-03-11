@@ -48,7 +48,8 @@ public class RageCapability {
             int duration = nbt.getInt(Rage.DURATION);
             int killCount = nbt.getInt(Rage.KILL_COUNT);
             rage.setRageDuration(duration);
-            rage.setKillCountFlat(killCount);
+            rage.setKillCountNoLogic(killCount);
+            rage.refreshInRageStatus();
         }
     }
 }
