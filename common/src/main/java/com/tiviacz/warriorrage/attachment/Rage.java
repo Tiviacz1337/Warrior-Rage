@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tiviacz.warriorrage.WarriorRage;
 import com.tiviacz.warriorrage.config.WarriorRageConfig;
+import com.tiviacz.warriorrage.platform.Platform;
 import com.tiviacz.warriorrage.util.OnHitEffect;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -31,19 +32,15 @@ public class Rage {
     public Rage(int rageDuration, int killCount) {
         this.rageDuration = rageDuration;
         this.killCount = killCount;
-        this.inRage = rageDuration > 0 && killCount > WarriorRageConfig.SERVER.minimalKillCount.get();
+        refreshInRageStatus();
     }
 
     public void refreshInRageStatus() {
-        this.inRage = this.rageDuration > 0 && this.killCount > WarriorRageConfig.SERVER.minimalKillCount.get();
+        this.inRage = this.killCount >= WarriorRageConfig.SERVER.minimalKillCount.get();
     }
 
     public boolean isInRage() {
         return this.inRage;
-    }
-
-    public double calculateBonusDamage(int killCount, double multiplier) {
-        return WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get() == 0 ? killCount * multiplier : (killCount / WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get()) * multiplier;
     }
 
     public int getRemainingRageDuration() {
@@ -54,14 +51,47 @@ public class Rage {
         return this.killCount;
     }
 
-    public void addKill(int count) {
-        if(this.killCount + count <= MAX_KILL_COUNT_CAP) {
-            this.killCount += count;
-        }
+    public void addKill(Player player, int count) {
+        this.killCount = Math.min(this.killCount + count, MAX_KILL_COUNT_CAP);
         refreshRageDuration();
-        if(!this.inRage) {
-            refreshInRageStatus();
+        refreshInRageStatus();
+
+        if(isInRage()) {
+            addAttributes(player);
         }
+    }
+
+    public void decreaseRageDuration(Player player) {
+        this.rageDuration = Math.max(0, this.rageDuration - 1);
+
+        if(this.inRage && this.rageDuration == 0) {
+            Platform.modifyAttachment(player, synced -> {
+                synced.setKillCount(0);
+                synced.removeAttributes(player);
+            });
+            Platform.synchronise(player);
+        }
+    }
+
+    public void refreshRageDuration() {
+        this.rageDuration = getDefaultRageDuration();
+    }
+
+    public int getDefaultRageDuration() {
+        return 20 * WarriorRageConfig.SERVER.rageDuration.get();
+    }
+
+    public void setKillCount(int count) {
+        this.killCount = Math.min(count, MAX_KILL_COUNT_CAP);
+        refreshInRageStatus();
+    }
+
+    public void setRageDuration(int timeInTicks) {
+        this.rageDuration = timeInTicks;
+    }
+
+    public double calculateBonusDamage(int killCount, double multiplier) {
+        return WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get() == 0 ? killCount * multiplier : (killCount / WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get()) * multiplier;
     }
 
     public void addAttributes(Player player) {
@@ -87,46 +117,5 @@ public class Rage {
             player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(RAGE_UUID);
         }
     }
-
-    public void decreaseRageDuration() {
-        if(this.rageDuration > 0) {
-            this.rageDuration -= 1;
-        }
-        if(this.rageDuration == 0) {
-            refreshInRageStatus();
-        }
-    }
-
-    public void refreshRageDuration() {
-        if(this.rageDuration < getDefaultRageDuration()) {
-            this.rageDuration = getDefaultRageDuration();
-        }
-    }
-
-    public int getDefaultRageDuration() {
-        return 20 * WarriorRageConfig.SERVER.rageDuration.get();
-    }
-
-    public void setKillCount(int count) {
-        if(count > MAX_KILL_COUNT_CAP) {
-            this.killCount = MAX_KILL_COUNT_CAP;
-            refreshRageDuration();
-        } else {
-            this.killCount = count;
-            if(count > 0) {
-                refreshRageDuration();
-            }
-            if(!this.inRage) {
-                refreshInRageStatus();
-            }
-        }
-    }
-
-    public void setKillCountNoLogic(int count) {
-        this.killCount = count;
-    }
-
-    public void setRageDuration(int timeInTicks) {
-        this.rageDuration = timeInTicks;
-    }
+    //give @p minecraft:diamond_sword{Enchantments:[{id:"minecraft:sharpness", lvl:1000}]} 1
 }

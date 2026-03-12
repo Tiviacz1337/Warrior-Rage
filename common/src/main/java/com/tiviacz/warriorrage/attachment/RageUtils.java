@@ -16,38 +16,19 @@ public class RageUtils {
         if(target instanceof Monster) {
             Entity deathSource = source.getEntity();
             if(deathSource instanceof Player player) {
-                Platform.modifyAttachment(player, rage -> {
-                    rage.addKill(1);
-                    if(rage.isInRage()) {
-                        rage.addAttributes(player);
-                    }
-                });
+                Platform.modifyAttachment(player, rage -> rage.addKill(player, 1));
                 Platform.synchronise(player);
             }
         }
     }
 
-    private static boolean rageRemoved = true;
-
     public static void tick(Player player) {
         Platform.getAttachment(player).ifPresent(rage -> {
             if(rage.isInRage()) {
                 addParticlesAroundSelf(ParticleTypes.FLAME, player);
-                rage.decreaseRageDuration();
-                rageRemoved = false;
-            } else {
-                if(!rageRemoved) {
-                    Platform.modifyAttachment(player, synced -> {
-                        synced.removeAttributes(player);
-                        synced.setKillCount(0);
-                    });
-                    Platform.synchronise(player);
-                    rageRemoved = true;
-                }
-            }
-            //Decrease if not in rage yet
-            if(!rage.isInRage() && rage.getCurrentKillCount() > 0) {
-                rage.decreaseRageDuration();
+                rage.decreaseRageDuration(player);
+            } else if(rage.getCurrentKillCount() > 0) {
+                rage.decreaseRageDuration(player);
             }
         });
     }
