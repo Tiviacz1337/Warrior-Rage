@@ -41,7 +41,7 @@ public class RageUtils {
 
         tick++;
 
-        if(tick == 50) {
+        if(tick >= 50) {
             for(int i = 0; i < 5; ++i) {
                 double d0 = player.level().random.nextGaussian() * 0.02D;
                 double d1 = player.level().random.nextGaussian() * 0.02D;
