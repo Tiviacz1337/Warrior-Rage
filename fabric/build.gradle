@@ -53,7 +53,7 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
     modImplementation("maven.modrinth:forge-config-api-port:$rootProject.forge_config_api_port_version")
-    modImplementation("maven.modrinth:forge-config-screens:$rootProject.forge_config_screens_version")
+    modImplementation("maven.modrinth:forge-config-screens:$rootProject.forge_config_screens_version_fabric")
     api 'com.electronwill.night-config:core:3.8.1'
     api 'com.electronwill.night-config:toml:3.8.1'
 

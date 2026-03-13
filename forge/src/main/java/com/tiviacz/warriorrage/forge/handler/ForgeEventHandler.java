@@ -13,6 +13,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,6 +35,14 @@ public class ForgeEventHandler {
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         if(event.phase == TickEvent.Phase.START) {
             RageUtils.tick(event.player);
+        }
+    }
+
+    @SubscribeEvent
+    public static void hurtEntity(LivingHurtEvent event) {
+        if(event.getSource().getEntity() instanceof Player player) {
+            float newAmount = RageUtils.hurt(player, event.getAmount());
+            event.setAmount(newAmount);
         }
     }
 
