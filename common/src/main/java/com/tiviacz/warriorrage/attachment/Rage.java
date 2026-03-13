@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tiviacz.warriorrage.WarriorRage;
 import com.tiviacz.warriorrage.config.WarriorRageConfig;
+import com.tiviacz.warriorrage.platform.Platform;
 import com.tiviacz.warriorrage.util.OnHitEffect;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -21,7 +22,7 @@ public class Rage {
     public static final String KILL_COUNT = "KillCount";
     public static final String DURATION = "Duration";
     public int MAX_KILL_COUNT_CAP = WarriorRageConfig.SERVER.maxKillCountCap.get();
-    public double BASE_MULTIPLIER = WarriorRageConfig.SERVER.bonusDamage.get();
+    public double BASE_MULTIPLIER = WarriorRageConfig.SERVER.bonusFlatDamage.get();
     public static final MapCodec<Rage> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf(DURATION).forGetter(Rage::getRemainingRageDuration),
             Codec.INT.fieldOf(KILL_COUNT).forGetter(Rage::getCurrentKillCount)
@@ -34,13 +35,79 @@ public class Rage {
     );
     private int rageDuration;
     private int killCount;
+    private boolean inRage;
 
     public Rage(int rageDuration, int killCount) {
         this.rageDuration = rageDuration;
         this.killCount = killCount;
+        refreshInRageStatus();
     }
 
-    public void startRage(Player player) {
+    public void refreshInRageStatus() {
+        this.inRage = this.killCount >= WarriorRageConfig.SERVER.minimalKillCount.get();
+    }
+
+    public boolean isInRage() {
+        return this.inRage;
+    }
+
+    public int getRemainingRageDuration() {
+        return this.rageDuration;
+    }
+
+    public int getCurrentKillCount() {
+        return this.killCount;
+    }
+
+    public void addKill(Player player, int count) {
+        this.killCount = Math.min(this.killCount + count, MAX_KILL_COUNT_CAP);
+        refreshRageDuration();
+        refreshInRageStatus();
+
+        if(isInRage()) {
+            addAttributes(player);
+        }
+    }
+
+    public void decreaseRageDuration(Player player) {
+        this.rageDuration = Math.max(0, this.rageDuration - 1);
+
+        if(this.inRage && this.rageDuration == 0) {
+            Platform.modifyAttachment(player, synced -> {
+                synced.setKillCount(0);
+                synced.removeAttributes(player);
+            });
+        }
+    }
+
+    public void refreshRageDuration() {
+        this.rageDuration = getDefaultRageDuration();
+    }
+
+    public int getDefaultRageDuration() {
+        return 20 * WarriorRageConfig.SERVER.rageDuration.get();
+    }
+
+    public void setKillCount(int count) {
+        this.killCount = Math.min(count, MAX_KILL_COUNT_CAP);
+        refreshInRageStatus();
+    }
+
+    public void setRageDuration(int timeInTicks) {
+        this.rageDuration = timeInTicks;
+    }
+
+    public double calculateBonusDamage(int killCount, double multiplier) {
+        return WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get() == 0 ? killCount * multiplier : (killCount / WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get()) * multiplier;
+    }
+
+    public double calculateBonusPercentageDamage(double currentAmount) {
+        double percentage = (killCount / WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get()) * WarriorRageConfig.SERVER.bonusPercentageDamage.get();
+        currentAmount += currentAmount * percentage;
+        return currentAmount;
+    }
+
+    public void addAttributes(Player player) {
         AttributeModifier attackDamageModifier = new AttributeModifier(RAGE, calculateBonusDamage(this.killCount, BASE_MULTIPLIER), AttributeModifier.Operation.ADD_VALUE);
         AttributeInstance attribute = player.getAttribute(Attributes.ATTACK_DAMAGE);
         if(attribute.getModifier(RAGE) != null) {
@@ -58,67 +125,9 @@ public class Rage {
         }
     }
 
-    public boolean isInRage() {
-        return this.killCount >= WarriorRageConfig.SERVER.minimalKillCount.get() && getRemainingRageDuration() > 0;
-    }
-
-    public double calculateBonusDamage(int killCount, double multiplier) {
-        return WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get() == 0 ? killCount * multiplier : (killCount / WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get()) * multiplier;
-    }
-
-    public int getRemainingRageDuration() {
-        return this.rageDuration;
-    }
-
-    public int getCurrentKillCount() {
-        return this.killCount;
-    }
-
-    public void addKill(int count) {
-        if(this.killCount + count <= MAX_KILL_COUNT_CAP) {
-            this.killCount += count;
-        }
-        refreshRageDuration();
-    }
-
-    public void decreaseRageDuration() {
-        if(this.rageDuration > 0) {
-            this.rageDuration -= 1;
-        }
-        if(rageDuration == 0) {
-            this.killCount = 0;
-        }
-    }
-
-    public void removeRageEffects(Player player) {
+    public void removeAttributes(Player player) {
         if(player.getAttribute(Attributes.ATTACK_DAMAGE).getModifier(RAGE) != null) {
             player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(RAGE);
         }
-    }
-
-    public void refreshRageDuration() {
-        if(this.rageDuration < getDefaultRageDuration()) {
-            this.rageDuration = getDefaultRageDuration();
-        }
-    }
-
-    public int getDefaultRageDuration() {
-        return 20 * WarriorRageConfig.SERVER.rageDuration.get();
-    }
-
-    public void setKillCount(int count) {
-        if(count > MAX_KILL_COUNT_CAP) {
-            this.killCount = MAX_KILL_COUNT_CAP;
-            refreshRageDuration();
-        } else if(count >= 0) {
-            this.killCount = count;
-            if(count > 0) {
-                refreshRageDuration();
-            }
-        }
-    }
-
-    public void setRageDuration(int timeInTicks) {
-        this.rageDuration = timeInTicks;
     }
 }
