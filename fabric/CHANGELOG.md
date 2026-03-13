@@ -1,3 +1,4 @@
+🐛 Fixed crash on start  
 ✨ Added bonusPercentageDamage config option, which increases the damage by percentage, including weapon damage (default 0%)  
 🐛 Fixed bugs and improved logic
 
