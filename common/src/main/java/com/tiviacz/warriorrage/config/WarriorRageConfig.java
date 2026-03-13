@@ -12,14 +12,15 @@ import java.util.List;
 import java.util.Set;
 
 public class WarriorRageConfig {
-    private static final String ON_HIT_EFFECT_MATCHER = "([a-z0-9_.-]+:[a-z0-9_/.-]+),\\s*(100|[1-9][0-9]?),\\s*(1000|[1-39][0-9]{0,2}),\\s*(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
+    private static final String ON_HIT_EFFECT_MATCHER = "([a-z0-9_.-]+:[a-z0-9_/.-]+),\\s*(100|[1-9][0-9]?),\\s*([1-9][0-9]{0,2}),\\s*(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
 
     public static class Server {
         public final ModConfigSpec.IntValue minimalKillCount;
         public final ModConfigSpec.IntValue rageDuration;
         public final ModConfigSpec.IntValue maxKillCountCap;
         public final ModConfigSpec.IntValue killIntervalBetweenNextBonus;
-        public final ModConfigSpec.DoubleValue bonusDamage;
+        public final ModConfigSpec.DoubleValue bonusFlatDamage;
+        public final ModConfigSpec.DoubleValue bonusPercentageDamage;
         public final ModConfigSpec.BooleanValue enableFireDamage;
         public final ModConfigSpec.IntValue fireDamageRequiredKillCount;
         public final ModConfigSpec.ConfigValue<List<? extends String>> onHitEffects;
@@ -45,9 +46,13 @@ public class WarriorRageConfig {
                     .comment("Number of kills, which will multiply the bonus damage eg. 5 means, every 5 kills attack damage will be increased by bonusDamage value")
                     .defineInRange("killIntervalBetweenNextBonus", 4, 1, 1000);
 
-            bonusDamage = builder
-                    .comment("Bonus damage per 4 kills in a row")
-                    .defineInRange("bonusDamage", 0.5D, 0.01D, 10.0D);
+            bonusFlatDamage = builder
+                    .comment("Flat bonus damage per consecutive kills, for example 4 kills = +0.5 damage, 8 kills = +1.0 damage")
+                    .defineInRange("bonusFlatDamage", 0.5D, 0.0D, 10.0D);
+
+            bonusPercentageDamage = builder
+                    .comment("Bonus percentage damage per kill consecutive kills (including weapon damage), for example 4 kills = +5% damage, 8 kills +10% damage")
+                    .defineInRange("bonusPercentageDamage", 0.0D, 0.0D, 10.0D);
 
             enableFireDamage = builder
                     .comment("Enable Fire Damage")
@@ -58,12 +63,12 @@ public class WarriorRageConfig {
                     .defineInRange("fireDamageRequiredKillCount", 20, 0, 1000);
 
             onHitEffects = builder
-                    .comment("List of effects that are being applied on hit, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-1000)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:slowness, 5, 40, 1'")
+                    .comment("List of effects that are being applied on hit, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-999)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:slowness, 5, 40, 1'")
                     .worldRestart()
                     .defineList("onHitEffects", new ArrayList<>(), () -> "", mapping -> ((String)mapping).matches(ON_HIT_EFFECT_MATCHER));
 
             playerEffects = builder
-                    .comment("List of effects that are being applied to player, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-1000)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:regeneration, 15, 40, 1'")
+                    .comment("List of effects that are being applied to player, use the following syntax 'registryEffectName, requiredKillCount (1-100), duration in ticks (1-999)[20ticks = 1 second], amplifier (0-255)' - example: 'minecraft:regeneration, 15, 40, 1'")
                     .worldRestart()
                     .defineList("playerEffects", new ArrayList<>(), () -> "", mapping -> ((String)mapping).matches(ON_HIT_EFFECT_MATCHER));
 

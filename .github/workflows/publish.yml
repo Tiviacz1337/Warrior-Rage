@@ -13,9 +13,9 @@ on:
 env:
   MINECRAFT_VERSION: 1.21.8
   JAVA_VERSION: 21
-  VERSION: 1.21.8-1.0.3
-  RELEASE_NAME_CURSEFORGE: "warriorrage-${{ inputs.loader }}-1.21.8-1.0.3"
-  RELEASE_NAME_MODRINTH: "[1.21.8] Warrior Rage 1.0.3"
+  VERSION: 1.21.8-1.0.5
+  RELEASE_NAME_CURSEFORGE: "warriorrage-${{ inputs.loader }}-1.21.8-1.0.5"
+  RELEASE_NAME_MODRINTH: "[1.21.8] Warrior Rage 1.0.5"
   MODRINTH_TOKEN: ${{ secrets.MODRINTH }}
   CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE }}
 
