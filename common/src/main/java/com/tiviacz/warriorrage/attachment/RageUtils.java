@@ -10,6 +10,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class RageUtils {
     public static void targetDie(LivingEntity target, DamageSource source) {
         if(target instanceof Monster) {
@@ -29,6 +31,17 @@ public class RageUtils {
                 rage.decreaseRageDuration(player);
             }
         });
+    }
+
+    public static float hurt(Player attacker, float originalAmount) {
+        AtomicReference<Float> amount = new AtomicReference<>(originalAmount);
+        Platform.getAttachment(attacker).ifPresent(rage -> {
+            if(rage.isInRage()) {
+                float newAmount = (float)rage.calculateBonusPercentageDamage(originalAmount);
+                amount.set(newAmount);
+            }
+        });
+        return amount.get();
     }
 
     private static int tick = 0;
