@@ -19,7 +19,8 @@ public class WarriorRageConfig {
         public final ModConfigSpec.IntValue rageDuration;
         public final ModConfigSpec.IntValue maxKillCountCap;
         public final ModConfigSpec.IntValue killIntervalBetweenNextBonus;
-        public final ModConfigSpec.DoubleValue bonusDamage;
+        public final ModConfigSpec.DoubleValue bonusFlatDamage;
+        public final ModConfigSpec.DoubleValue bonusPercentageDamage;
         public final ModConfigSpec.BooleanValue enableFireDamage;
         public final ModConfigSpec.IntValue fireDamageRequiredKillCount;
         public final ModConfigSpec.ConfigValue<List<? extends String>> onHitEffects;
@@ -45,9 +46,13 @@ public class WarriorRageConfig {
                     .comment("Number of kills, which will multiply the bonus damage eg. 5 means, every 5 kills attack damage will be increased by bonusDamage value")
                     .defineInRange("killIntervalBetweenNextBonus", 4, 1, 1000);
 
-            bonusDamage = builder
-                    .comment("Bonus damage per 4 kills in a row")
-                    .defineInRange("bonusDamage", 0.5D, 0.01D, 10.0D);
+            bonusFlatDamage = builder
+                    .comment("Flat bonus damage per consecutive kills, for example 4 kills = +0.5 damage, 8 kills = +1.0 damage")
+                    .defineInRange("bonusFlatDamage", 0.5D, 0.0D, 10.0D);
+
+            bonusPercentageDamage = builder
+                    .comment("Bonus percentage damage per kill consecutive kills (including weapon damage), for example 4 kills = +5% damage, 8 kills +10% damage")
+                    .defineInRange("bonusPercentageDamage", 0.0D, 0.0D, 10.0D);
 
             enableFireDamage = builder
                     .comment("Enable Fire Damage")

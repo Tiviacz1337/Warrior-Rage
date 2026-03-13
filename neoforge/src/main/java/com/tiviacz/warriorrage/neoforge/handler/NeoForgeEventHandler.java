@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -28,6 +29,14 @@ public class NeoForgeEventHandler {
     @SubscribeEvent
     public static void playerTick(PlayerTickEvent.Post event) {
         RageUtils.tick(event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void hurtEntity(LivingDamageEvent.Pre event) {
+        if(event.getSource().getEntity() instanceof Player player) {
+            float newAmount = RageUtils.hurt(player, event.getOriginalDamage());
+            event.setNewDamage(newAmount);
+        }
     }
 
     //NEOFORGE ONLY TO SYNC, MISSING SYNCING METHOD ON ATTACHMENT ;-;

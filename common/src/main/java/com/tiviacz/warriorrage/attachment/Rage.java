@@ -21,7 +21,7 @@ public class Rage {
     public static final String KILL_COUNT = "KillCount";
     public static final String DURATION = "Duration";
     public int MAX_KILL_COUNT_CAP = WarriorRageConfig.SERVER.maxKillCountCap.get();
-    public double BASE_MULTIPLIER = WarriorRageConfig.SERVER.bonusDamage.get();
+    public double BASE_MULTIPLIER = WarriorRageConfig.SERVER.bonusFlatDamage.get();
     public static final Codec<Rage> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf(DURATION).forGetter(Rage::getRemainingRageDuration),
             Codec.INT.fieldOf(KILL_COUNT).forGetter(Rage::getCurrentKillCount)).apply(instance, Rage::new));
@@ -97,6 +97,12 @@ public class Rage {
 
     public double calculateBonusDamage(int killCount, double multiplier) {
         return WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get() == 0 ? killCount * multiplier : (killCount / WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get()) * multiplier;
+    }
+
+    public double calculateBonusPercentageDamage(double currentAmount) {
+        double percentage = (killCount / WarriorRageConfig.SERVER.killIntervalBetweenNextBonus.get()) * WarriorRageConfig.SERVER.bonusPercentageDamage.get();
+        currentAmount += currentAmount * percentage;
+        return currentAmount;
     }
 
     public void addAttributes(Player player) {
