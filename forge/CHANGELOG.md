@@ -1,4 +1,4 @@
-✨ Added bonusPercentageDamage config option, which increases the damage by percentage (includes weapon damage)  
+✨ Added bonusPercentageDamage config option, which increases the damage by percentage, including weapon damage (default 0%)  
 🐛 Fixed bugs and improved logic  
 
 ⭐ Want to receive **Supporter Star Badge** for a **lifetime**? - [visit my Ko-Fi page](https://ko-fi.com/tiviacz1337)!  

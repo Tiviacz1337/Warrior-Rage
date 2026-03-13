@@ -48,7 +48,7 @@ public class WarriorRageConfig {
 
             bonusFlatDamage = builder
                     .comment("Flat bonus damage per consecutive kills, for example 4 kills = +0.5 damage, 8 kills = +1.0 damage")
-                    .defineInRange("bonusDamage", 0.5D, 0.01D, 10.0D);
+                    .defineInRange("bonusFlatDamage", 0.5D, 0.0D, 10.0D);
 
             bonusPercentageDamage = builder
                     .comment("Bonus percentage damage per kill consecutive kills (including weapon damage), for example 4 kills = +5% damage, 8 kills +10% damage")
