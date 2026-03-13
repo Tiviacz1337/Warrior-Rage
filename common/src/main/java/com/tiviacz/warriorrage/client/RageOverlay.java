@@ -18,8 +18,6 @@ public class RageOverlay {
     private static float currentAlpha = 0.0F;
 
     public static void renderOverlay(Minecraft mc, GuiGraphics guiGraphics) {
-        if(!WarriorRageConfig.CLIENT.renderRageIcon.get() && !WarriorRageConfig.CLIENT.renderRageBar.get()) return;
-
         Player player = mc.player;
         if(mc.gameMode != null && !mc.gameMode.hasExperience()) return;
         if(player == null) return;
@@ -75,7 +73,9 @@ public class RageOverlay {
             }
 
             if(currentAlpha > 0.0F) {
-                renderTextureOverlay(guiGraphics, RAGE_OVERLAY, currentAlpha);
+                if(WarriorRageConfig.CLIENT.renderRageOverlay.get()) {
+                    renderTextureOverlay(guiGraphics, RAGE_OVERLAY, currentAlpha);
+                }
             }
         });
     }

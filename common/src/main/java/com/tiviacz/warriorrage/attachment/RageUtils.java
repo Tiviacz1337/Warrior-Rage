@@ -15,14 +15,7 @@ public class RageUtils {
         if(target instanceof Monster) {
             Entity deathSource = source.getEntity();
             if(deathSource instanceof Player player) {
-                Platform.modifyAttachment(player, rage -> {
-                    rage.addKill(1);
-                    if(rage.isInRage()) {
-                        rage.startRage(player);
-                    } else {
-                        rage.removeRageEffects(player);
-                    }
-                });
+                Platform.modifyAttachment(player, rage -> rage.addKill(player, 1));
                 Platform.synchronise(player);
             }
         }
@@ -32,12 +25,9 @@ public class RageUtils {
         Platform.getAttachment(player).ifPresent(rage -> {
             if(rage.isInRage()) {
                 addParticlesAroundSelf(ParticleTypes.FLAME, player);
-                rage.decreaseRageDuration();
-            } else if(rage.getRemainingRageDuration() > 0 && rage.getCurrentKillCount() < WarriorRageConfig.SERVER.minimalKillCount.get()) {
-                rage.decreaseRageDuration();
-            } else {
-                Platform.modifyAttachment(player, synced -> synced.removeRageEffects(player));
-                Platform.synchronise(player);
+                rage.decreaseRageDuration(player);
+            } else if(rage.getCurrentKillCount() > 0) {
+                rage.decreaseRageDuration(player);
             }
         });
     }
@@ -50,7 +40,7 @@ public class RageUtils {
 
         tick++;
 
-        if(tick == 50) {
+        if(tick >= 50) {
             for(int i = 0; i < 5; ++i) {
                 double d0 = player.level().random.nextGaussian() * 0.02D;
                 double d1 = player.level().random.nextGaussian() * 0.02D;
