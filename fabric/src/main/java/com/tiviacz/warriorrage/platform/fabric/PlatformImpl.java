@@ -18,7 +18,7 @@ public class PlatformImpl {
                 rage = new Rage(0, 0);
             }
             rageConsumer.accept(rage);
-            return rage;
+            return new Rage(rage.getRemainingRageDuration(), rage.getCurrentKillCount());
         });
     }
 
